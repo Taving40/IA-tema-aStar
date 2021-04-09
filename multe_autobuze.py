@@ -38,7 +38,7 @@ class Om:
             return True
         return False
 
-class Nod:
+class NodInfo:
     def __init__(self, autobuze, oameni, time):
         self.autobuze = autobuze
         self.oameni = oameni
@@ -51,8 +51,88 @@ class Nod:
                 f"Autobuze:\n{str_auto}\n"
                 f"Oameni:\n{str_oameni}\n")
     
+
+class NodParcurgere:
+    graf = None #static
+	def __init__(self, id, info, parinte, cost, h):
+		self.id = id # este indicele din vectorul de noduri
+		self.info = info
+		self.parinte = parinte #parintele din arborele de parcurgere
+		self.g = cost #costul de la radacina la nodul curent
+		self.h = h
+		self.f = self.g + self.h
+
+	def obtineDrum(self):
+		l = [self.info]
+		nod = self
+		while nod.parinte is not None:
+			l.insert(0, nod.parinte.info)
+			nod = nod.parinte
+		return l
+		
+	def afisDrum(self):
+		l = self.obtineDrum()
+		print(("->").join(l))
+		print("Cost: ", self.g)
+		return len(l)
+
+	def contineInDrum(self, infoNodNou):
+		nodDrum = self
+		while nodDrum is not None:
+			if(infoNodNou == nodDrum.info):
+				return True
+			nodDrum = nodDrum.parinte
+		
+		return False
+		
     def noSol(self): #TODO: decide if applicable to task
         return False
+
+	def __str__(self):
+		sir = ""		
+		sir += str(self.info)+"("
+		sir += "id = {}, ".format(self.id)
+		sir += "drum="
+		drum = self.obtineDrum()
+		sir += ("->").join(drum)
+		sir += " g:{}".format(self.g)
+		sir += " h:{}".format(self.h)
+		sir += " f:{})".format(self.f)
+		return sir
+
+class Graph: #TODO: adapt to task AND initialize
+	def __init__(self, noduri, matriceAdiacenta, matricePonderi, start, scopuri, lista_h):
+		self.noduri=noduri
+		self.matriceAdiacenta=matriceAdiacenta
+		self.matricePonderi=matricePonderi
+		self.nrNoduri=len(matriceAdiacenta)
+		self.start=start
+		self.scopuri=scopuri
+		self.lista_h=lista_h
+
+	def indiceNod(self, n):
+		return self.noduri.index(n)
+		
+	def testeaza_scop(self, nodCurent):
+		return nodCurent.info in self.scopuri
+
+	#va genera succesorii sub forma de noduri in arborele de parcurgere
+	def genereazaSuccesori(self, nodCurent):
+		listaSuccesori=[]
+		for i in range(self.nrNoduri):
+			if self.matriceAdiacenta[nodCurent.id][i] == 1 and  not nodCurent.contineInDrum(self.noduri[i]):
+				nodNou=NodParcurgere(i, self.noduri[i], nodCurent, nodCurent.g+ self.matricePonderi[nodCurent.id][i], self.calculeaza_h(self.noduri[i]))
+				listaSuccesori.append(nodNou)
+		return listaSuccesori
+
+	def calculeaza_h(self, infoNod):
+		return self.lista_h[self.indiceNod(infoNod)]
+
+	def __repr__(self):
+		sir=""
+		for (k,v) in self.__dict__.items() :
+			sir+="{} = {}\n".format(k,v)
+		return(sir)
 
 def init():
     if len(sys.argv) != 5:
@@ -149,8 +229,11 @@ def read_one(paths_in, paths_out, current_fis=0):
     return time_begin, time_end, autobuze, oameni, nr_oameni
 
 
-def noSol(nod): #TODO: decide if applicable to task
+def noSol(nod_start): #TODO: decide if applicable to task
     pass
+
+
+
     
 
 

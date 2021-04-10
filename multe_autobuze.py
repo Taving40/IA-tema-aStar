@@ -1,6 +1,11 @@
 import sys
 import os
 from copy import deepcopy
+
+#TODO: 
+# -Add A* function
+# -rewrite comments to be of appropriate format
+# -write doc
    
 class Autobuz:
     def __init__(self, id, price, break_duration, trip_duration, destinations):
@@ -24,13 +29,12 @@ class Om:
         self.money = money
         self.destinations = destinations
         self.remaining_dest = destinations[1:]
-        self.remaining_money = money
-        self.current_loc = destinations[0]
+        self.current_loc = 0
 
     def __str__(self):
         return (f"name={self.name}\n"
                 f"money={self.money}\n"
-                f"current_loc={self.current_loc}\n"
+                f"current_loc={self.remaining_dest[0]}\n"
                 f"first_dest={self.destinations[0]}\n")
 
     def isDone(self):
@@ -85,8 +89,21 @@ class NodParcurgere:
 		
 		return False
 		
-    def noSol(self): #TODO: decide if applicable to task
-        return False
+    def noSol(self): 
+        noSol = False
+
+        cost_min_bilet = 100000
+
+        for a in info.autobuze:
+            if a.price < cost_min_bilet:
+                cost_min_bilet = a.price
+
+        for o in info.oameni:
+            if o.remaining_money < cost_min_bilet and o.current_loc != o.destinations[-1]: #if om is not done and has no money
+                noSol = True
+                break
+
+        return noSol
 
 	def __str__(self):
 		sir = ""		
@@ -100,33 +117,34 @@ class NodParcurgere:
 		sir += " f:{})".format(self.f)
 		return sir
 
-class Graph: #TODO: adapt to task AND initialize
-	def __init__(self, noduri, matriceAdiacenta, matricePonderi, start, scopuri, lista_h):
-		self.noduri=noduri
-		self.matriceAdiacenta=matriceAdiacenta
-		self.matricePonderi=matricePonderi
-		self.nrNoduri=len(matriceAdiacenta)
-		self.start=start
-		self.scopuri=scopuri
-		self.lista_h=lista_h
+class Graph: #TODO 
+	def __init__(self, nod_start):
 
-	def indiceNod(self, n):
-		return self.noduri.index(n)
-		
+
 	def testeaza_scop(self, nodCurent):
 		return nodCurent.info in self.scopuri
 
-	#va genera succesorii sub forma de noduri in arborele de parcurgere
-	def genereazaSuccesori(self, nodCurent):
+	#va genera succesorii sub forma de noduri in arborele de parcurgere	
+
+	def nuAreSolutii(self, nod):
+		return nod.noSol()
+
+	def genereazaSuccesori(self, nodCurent, tip_euristica="euristica banala"):
 		listaSuccesori=[]
-		for i in range(self.nrNoduri):
-			if self.matriceAdiacenta[nodCurent.id][i] == 1 and  not nodCurent.contineInDrum(self.noduri[i]):
-				nodNou=NodParcurgere(i, self.noduri[i], nodCurent, nodCurent.g+ self.matricePonderi[nodCurent.id][i], self.calculeaza_h(self.noduri[i]))
-				listaSuccesori.append(nodNou)
+		
 		return listaSuccesori
 
-	def calculeaza_h(self, infoNod):
-		return self.lista_h[self.indiceNod(infoNod)]
+
+	# euristica banala
+	def calculeaza_h(self, infoNod, tip_euristica="euristica banala"):
+		if infoNod in self.scopuri:
+			return 0
+		if tip_euristica=="euristica banala":
+			return 1
+		else: #TODO
+			h=0
+			
+			return h
 
 	def __repr__(self):
 		sir=""
@@ -137,7 +155,7 @@ class Graph: #TODO: adapt to task AND initialize
 def init():
     if len(sys.argv) != 5:
         print("Invalid number of arguments, exiting...")
-        quit() 
+        sys.exit(0) 
     else:
         try:
             dir_in = sys.argv[1]
@@ -146,7 +164,7 @@ def init():
             timeout = sys.argv[4]
         except Exception as eroare:
             print("Provided arguments are of wrong type, exiting...")
-            quit()
+            sys.exit(0)
     return dir_in, dir_out, nsol, timeout
 
 
@@ -228,25 +246,54 @@ def read_one(paths_in, paths_out, current_fis=0):
 
     return time_begin, time_end, autobuze, oameni, nr_oameni
 
-
-def noSol(nod_start): #TODO: decide if applicable to task
-    pass
-
+def make_scopuri(): #TODO: be careful of the fact that either you ll have no people at the end
+                    #      or each of their "remaining_dest" MUST be empty. I see no way to check
+                    #      against the fact that they must visit each destination in order.
 
 
     
-
+def a_star(gr, nrSolutiiCautate, tip_euristica):
+	#in coada vom avea doar noduri de tip NodParcurgere (nodurile din arborele de parcurgere)
+	c=[NodParcurgere(gr.start, None, 0, gr.calculeaza_h(gr.start))]
+	
+	while len(c) > 0:
+		nodCurent = c.pop(0)
+		
+		if gr.testeaza_scop(nodCurent):
+			print("Solutie: ")
+			nodCurent.afisDrum(afisCost=True, afisLung=True)
+			print("\n----------------\n")
+			input()
+			nrSolutiiCautate -= 1
+			if nrSolutiiCautate == 0:
+				return
+		lSuccesori=gr.genereazaSuccesori(nodCurent,tip_euristica=tip_euristica)	
+		for s in lSuccesori:
+			i = 0
+			gasit_loc = False
+			for i in range(len(c)):
+				#diferenta fata de UCS e ca ordonez dupa f
+				if c[i].f >= s.f :
+					gasit_loc = True
+					break
+			if gasit_loc:
+				c.insert(i,s)
+			else:
+				c.append(s)
 
 
 def main():
-    dir_in, dir_out, nsol, timeout = init()
+    dir_in, dir_out, nrsol, timeout = init()
     paths_in, paths_out = make_files(dir_in, dir_out)
     for i in range(len(paths_in)):
         time_begin, time_end, autobuze, oameni, nr_oameni = read_one(paths_in, paths_out, i)
-         
+
+        nod_start =  NodParcurgere(0, NodInfo(autobuze, oameni, time_begin), None, 0, 0)
+        graf = Graph() #TODO
+
         if noSol(nod_start):
             print("Starea de inceput nu permite solutii")
-            quit()
+            sys.exit(0)
         
 
 

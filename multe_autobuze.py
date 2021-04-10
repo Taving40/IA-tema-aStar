@@ -3,7 +3,14 @@ import os
 from copy import deepcopy
 
 #TODO: 
-# -Add A* function
+# -How to generate events: Keep a list of Autobuz and iterate over it to find out if there is an event at the next station each of the Autobuz arrives at
+# -List should be sorted from low to high by time it takes Autobuz to go between stations
+# -Iterate again only over events
+# -For each Autobuz that has an event at the next station, generate one Succesor (when Om changes state)
+# -Each NEXT event assumes Om did not change state at the previous event (so when I print it out I can print "asteapta...")
+
+# -Autobuz must have field of Om (automatically generates event if there s a person inside and it gets to the next station)
+# -Adapt Graph and Node
 # -rewrite comments to be of appropriate format
 # -write doc
    
@@ -15,6 +22,7 @@ class Autobuz:
         self.trip_duration = trip_duration
         self.destinations = destinations
         self.current_loc = None
+        self.direction_forward = True
     
     def __str__(self):
         return (f"id={self.id}\n"
@@ -22,6 +30,10 @@ class Autobuz:
                 f"break_duration={self.break_duration}\n"
                 f"trip_duration={self.trip_duration}\n"
                 f"first_dest={self.destinations[0]}\n")
+    
+    def find_current_loc(elapsed_time):
+
+
     
 class Om:
     def __init__(self, name, money, destinations):
@@ -99,7 +111,7 @@ class NodParcurgere:
                 cost_min_bilet = a.price
 
         for o in info.oameni:
-            if o.remaining_money < cost_min_bilet and o.current_loc != o.destinations[-1]: #if om is not done and has no money
+            if o.remaining_money < cost_min_bilet and o.current_loc != o.destinations[-1]: #if om is not done and has no money =[
                 noSol = True
                 break
 
@@ -118,7 +130,10 @@ class NodParcurgere:
 		return sir
 
 class Graph: #TODO 
-	def __init__(self, nod_start):
+	def __init__(self, nod_start, scopuri):
+        self.start = nod_start
+        self.scop = scop
+
 
 
 	def testeaza_scop(self, nodCurent):
@@ -126,7 +141,7 @@ class Graph: #TODO
 
 	#va genera succesorii sub forma de noduri in arborele de parcurgere	
 
-	def nuAreSolutii(self, nod):
+	def nuAreSolutii(self, nod): #TODO: check if initially there are multiple people in the same place
 		return nod.noSol()
 
 	def genereazaSuccesori(self, nodCurent, tip_euristica="euristica banala"):
@@ -246,9 +261,16 @@ def read_one(paths_in, paths_out, current_fis=0):
 
     return time_begin, time_end, autobuze, oameni, nr_oameni
 
-def make_scopuri(): #TODO: be careful of the fact that either you ll have no people at the end
+def make_scop(nod_start): #TODO: be careful of the fact that either you ll have no people at the end
                     #      or each of their "remaining_dest" MUST be empty. I see no way to check
                     #      against the fact that they must visit each destination in order.
+    oameni = []
+    for o in nod_start.oameni:
+        new_o = deepcopy(o)
+        new_o.remaining_dest = []
+        new_o.money = None
+    scop = NodInfo(None, )
+        
 
 
     

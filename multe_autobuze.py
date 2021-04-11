@@ -67,7 +67,7 @@ class Om:
         self.money = money
         self.destinations = destinations
         self.remaining_dest = destinations[1:]
-        self.current_loc = 0
+        self.current_loc = destinations[0]
         self.state = "waiting" #can be "waiting" or "in_bus"
         self.autobuz = None #Autobuz id
 
@@ -107,24 +107,6 @@ class NodParcurgere:
         self.f = self.g + self.h
         self.autobuze = autobuze #required for genereazaSuccesori
 
-    def __gt__(self, other):
-        if(self.info > other.info):
-            return True
-        else:
-            return False
-
-    def __eq__(self, other):
-        if(self.info == other.info):
-            return True
-        else:
-            return False
-    
-    def __lt__(self, other):
-        if(self.info<other.info):
-            return True
-        else:
-            return False
-
     def obtineDrum(self):
         l = [self.info]
         nod = self
@@ -148,8 +130,8 @@ class NodParcurgere:
 		
         return False
 		
-    def noSol(self):  #TODO: check if initially there are multiple people in the same place
-        noSol = False #      check if timestamp is so high that no other Autobuz can reach NextDestination
+    def noSol(self):  
+        noSol = False 
 
         cost_min_bilet = 100000
 
@@ -157,10 +139,21 @@ class NodParcurgere:
             if a.price < cost_min_bilet:
                 cost_min_bilet = a.price
 
+        #check if there is Om that can no longer move and stil has remaining_dest
         for o in self.info.oameni:
-            if o.money < cost_min_bilet and o.current_loc != o.destinations[-1]: #if om is not done and has no money =[
+            if o.money < cost_min_bilet and remaining_dest != []: #if om is not done and has no money =[
                 noSol = True
                 break
+        
+        #check if there are multiple people in the same place
+        set_destinatii = {}
+
+        for o in self.info.oameni:
+            if o.current_loc in set_destinatii:
+                noSol = True
+                break
+            else:
+                set_destinatii.add(o.currnet_loc)
 
         return noSol
 
@@ -276,7 +269,7 @@ def read_one(paths_in, paths_out, current_fis=0):
     line = f.readline()
     line_spaces = line.split(" ")
     line_dest = line.split(",")
-    time_begin, time_end = line_spaces[0], line_spaces[1]
+    time_begin, time_end = line_spaces[0].strip(), line_spaces[1].strip()
 
     autobuze = []
 
@@ -340,11 +333,11 @@ def a_star(gr, nrSolutiiCautate, tip_euristica):
 				c.append(s)
 
 def timeToMinutes(timestamp):
-    # print(f"timestamp is {timestamp} and type is {type(timestamp)}\n")
-    if len(timestamp) == 5: #16:00
-        return int(timestamp[:2])*60 + int(timestamp[3])*10 + int(timestamp[4])
-    else: #len(timestamp) == 4 #8:00
-        return int(timestamp[0])*60 + int(timestamp[3])*10 + int(timestamp[4])
+    if len(timestamp) == 6: 
+        return int(timestamp[0])*600 + int(timestamp[1])*60 + int(timestamp[3])*10 + int(timestamp[4])
+    return None
+
+        
 
 
 
@@ -353,10 +346,10 @@ def main():
     paths_in, paths_out = make_files(dir_in, dir_out)
     for i in range(len(paths_in)):
         time_begin, time_end, autobuze, oameni, nr_oameni = read_one(paths_in, paths_out, i)
-        
+
         time_begin = timeToMinutes(time_begin)
         time_end = timeToMinutes(time_end)
-        print(f"\ntime_begin = {time_begin}, time_end = {time_end}, time_begin*2 == time_end = {time_begin*2 == time_end}\n")
+        # print(f"\ntime_begin = {time_begin}, time_end = {time_end}, time_begin*2 == time_end = {time_begin*2 == time_end}\n")
 
         nod_start =  NodParcurgere(0, NodInfo(oameni, time_begin), None, 0, 0, autobuze)
         graf = Graph(time_end, nod_start) #TODO

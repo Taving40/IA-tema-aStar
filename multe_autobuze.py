@@ -8,9 +8,17 @@ from copy import deepcopy
 # -Iterate again only over events
 # -For each Autobuz that has an event at the next station, generate one Succesor (when Om changes state)
 # -Each NEXT event assumes Om did not change state at the previous event (so when I print it out I can print "asteapta...")
+# -WHEN checking to see if there is an Event, check if Om has been passed by Autobuz already (and thus cannot board, so no event is triggered)
+# -For this ^^^, Autobuz must have field of list of (Om, destination) that is reset every time he returns to that destination and that Om is no longer there
 
+# -NodParcurgere MUST have field of list of Autobuz, so that when I want to genereazaSuccesori for it I can iterate over the RIGHT list
+# -Graph should have field of list of Autobuz so that I can iterate over it when generating successors
+# -Om must have field of stare (so I know what to print for other Om's when at every event only one changes stare)
 # -Autobuz must have field of Om (automatically generates event if there s a person inside and it gets to the next station)
 # -Adapt Graph and Node
+# -Remember to handle people who have remaining_destinations == []
+#Figure out euristica
+# -Figure out timeout
 # -rewrite comments to be of appropriate format
 # -write doc
    
@@ -21,20 +29,38 @@ class Autobuz:
         self.break_duration = break_duration
         self.trip_duration = trip_duration
         self.destinations = destinations
-        self.current_loc = None
-        self.direction_forward = True
+        self.current_loc = len(destinations)-1 #index for list destinations
+        self.direction_forward = False #initially leaves from end of route
+        self.om = None #add Om when one boards
     
     def __str__(self):
         return (f"id={self.id}\n"
                 f"price={self.price}\n"
                 f"break_duration={self.break_duration}\n"
                 f"trip_duration={self.trip_duration}\n"
-                f"first_dest={self.destinations[0]}\n")
+                f"om={self.om}\n")
     
-    def find_current_loc(elapsed_time):
+    def getNextDest(self):
+        if self.direction_forward:
+            if len(self.destinations)-1 == current_loc: #if Autobuz reaches rightmost destination, it also takes a break and changes directions
+                current_loc = current_loc #remove later
+                direction_forward = False #Autobuz changes direction
+                return destinations[current_loc], (break_time + trip_time) #return destination reached and elapsed time
+  
+            else:
+                self.current_loc += 1
+                return destinations[current_loc], trip_duration
+        
+        else:
+            if 0 == current_loc: #if Autobuz reaches leftmost destination, it also takes a break and changes directions
+                current_loc = current_loc #remove later
+                direction_forward = True
+                return destinations[current_loc],  (break_time + trip_duration)
+            
+            else:
+                self.current_loc -= 1
+                return destinations[current_loc], trip_duration
 
-
-    
 class Om:
     def __init__(self, name, money, destinations):
         self.name = name
@@ -42,130 +68,154 @@ class Om:
         self.destinations = destinations
         self.remaining_dest = destinations[1:]
         self.current_loc = 0
-
-    def __str__(self):
-        return (f"name={self.name}\n"
-                f"money={self.money}\n"
-                f"current_loc={self.remaining_dest[0]}\n"
-                f"first_dest={self.destinations[0]}\n")
+        self.state = "waiting" #can be "waiting" or "in_bus"
+        self.autobuz = None #Autobuz id
 
     def isDone(self):
         if self.remaining_dest == []:
             return True
         return False
 
+    def __str__(self):
+        return (f"name={self.name}\n"
+                f"money={self.money}\n"
+                f"current_loc={self.remaining_dest[0]}\n"
+                f"first_dest={self.destinations[0]}\n"
+                f"state={self.state}\n"
+                f"autobuz={self.autobuz}\n")
+
 class NodInfo:
-    def __init__(self, autobuze, oameni, time):
-        self.autobuze = autobuze
+    def __init__(self, oameni, time):
         self.oameni = oameni
         self.time = time
 
     def __str__(self):
-        str_auto = [str(a) for a in autobuze]
         str_oameni = [str(o) for o in oameni]
         return (f"Time: {self.time}\n"
-                f"Autobuze:\n{str_auto}\n"
                 f"Oameni:\n{str_oameni}\n")
     
 
 class NodParcurgere:
     graf = None #static
-	def __init__(self, id, info, parinte, cost, h):
-		self.id = id # este indicele din vectorul de noduri
-		self.info = info
-		self.parinte = parinte #parintele din arborele de parcurgere
-		self.g = cost #costul de la radacina la nodul curent
-		self.h = h
-		self.f = self.g + self.h
+    
+    def __init__(self, id, info, parinte, cost, h, autobuze): #self, id, info, parinte, cost, h, autobuze
+        self.id = id # este indicele din vectorul de noduri
+        self.info = info
+        self.parinte = parinte #parintele din arborele de parcurgere
+        self.g = cost #costul de la radacina la nodul curent
+        self.h = h
+        self.f = self.g + self.h
+        self.autobuze = autobuze #required for genereazaSuccesori
 
-	def obtineDrum(self):
-		l = [self.info]
-		nod = self
-		while nod.parinte is not None:
-			l.insert(0, nod.parinte.info)
-			nod = nod.parinte
-		return l
-		
-	def afisDrum(self):
-		l = self.obtineDrum()
-		print(("->").join(l))
-		print("Cost: ", self.g)
-		return len(l)
+    def __gt__(self, other):
+        if(self.info > other.info):
+            return True
+        else:
+            return False
 
-	def contineInDrum(self, infoNodNou):
-		nodDrum = self
-		while nodDrum is not None:
-			if(infoNodNou == nodDrum.info):
-				return True
-			nodDrum = nodDrum.parinte
+    def __eq__(self, other):
+        if(self.info == other.info):
+            return True
+        else:
+            return False
+    
+    def __lt__(self, other):
+        if(self.info<other.info):
+            return True
+        else:
+            return False
+
+    def obtineDrum(self):
+        l = [self.info]
+        nod = self
+        while nod.parinte is not None:
+            l.insert(0, nod.parinte.info)
+            nod = nod.parinte
+        return l
 		
-		return False
+    def afisDrum(self):
+        l = self.obtineDrum()
+        print(("->").join(l))
+        print("Cost: ", self.g)
+        return len(l)
+
+    def contineInDrum(self, infoNodNou):
+        nodDrum = self
+        while nodDrum is not None:
+            if(infoNodNou == nodDrum.info):
+                return True
+            nodDrum = nodDrum.parinte
 		
-    def noSol(self): 
-        noSol = False
+        return False
+		
+    def noSol(self):  #TODO: check if initially there are multiple people in the same place
+        noSol = False #      check if timestamp is so high that no other Autobuz can reach NextDestination
 
         cost_min_bilet = 100000
 
-        for a in info.autobuze:
+        for a in self.autobuze:
             if a.price < cost_min_bilet:
                 cost_min_bilet = a.price
 
-        for o in info.oameni:
-            if o.remaining_money < cost_min_bilet and o.current_loc != o.destinations[-1]: #if om is not done and has no money =[
+        for o in self.info.oameni:
+            if o.money < cost_min_bilet and o.current_loc != o.destinations[-1]: #if om is not done and has no money =[
                 noSol = True
                 break
 
         return noSol
 
-	def __str__(self):
-		sir = ""		
-		sir += str(self.info)+"("
-		sir += "id = {}, ".format(self.id)
-		sir += "drum="
-		drum = self.obtineDrum()
-		sir += ("->").join(drum)
-		sir += " g:{}".format(self.g)
-		sir += " h:{}".format(self.h)
-		sir += " f:{})".format(self.f)
-		return sir
+    def __str__(self):
+        sir = ""
+        sir += str(self.info)+"("
+        sir += "id = {}, ".format(self.id)
+        sir += "drum="
+        drum = self.obtineDrum()
+        sir += ("->").join(drum)
+        sir += " g:{}".format(self.g)
+        sir += " h:{}".format(self.h)
+        sir += " f:{})".format(self.f)
+        return sir
 
 class Graph: #TODO 
-	def __init__(self, nod_start, scopuri):
+    def __init__(self, time_end, nod_start):
+        self.time_end = time_end
         self.start = nod_start
-        self.scop = scop
+        self.nodCurent = nod_start
 
+    def testeaza_scop(self, nodCurent): #TODO: be careful of the fact that either you ll have no people at the end
+                                        #      or each of their "remaining_dest" MUST be empty. I see no other way to check
+                                        #      against the fact that they must visit each destination in order.
+        isScop = True
+        for o in nodcurent.info.oameni:
+            if o.remaining_dest != []:
+                isScop = False
+                break
+        return isScop
 
+    def nuAreSolutii(self, nod): 
+        return nod.noSol()       
 
-	def testeaza_scop(self, nodCurent):
-		return nodCurent.info in self.scopuri
-
-	#va genera succesorii sub forma de noduri in arborele de parcurgere	
-
-	def nuAreSolutii(self, nod): #TODO: check if initially there are multiple people in the same place
-		return nod.noSol()
-
-	def genereazaSuccesori(self, nodCurent, tip_euristica="euristica banala"):
-		listaSuccesori=[]
+    def genereazaSuccesori(self, nodCurent, tip_euristica="euristica banala"):
+        listaSuccesori=[]
 		
-		return listaSuccesori
-
+        return listaSuccesori
 
 	# euristica banala
-	def calculeaza_h(self, infoNod, tip_euristica="euristica banala"):
-		if infoNod in self.scopuri:
-			return 0
-		if tip_euristica=="euristica banala":
-			return 1
-		else: #TODO
-			h=0
-			
-			return h
+    def calculeaza_h(self, infoNod, tip_euristica="euristica banala"):
+        if testeaza_scop(infoNod):
+            return 0
+        if tip_euristica=="euristica banala":
+            return 1
+        else: #TODO
+            h=0
+            
+            return h
 
-	def __repr__(self):
-		sir=""
-		for (k,v) in self.__dict__.items() :
-			sir+="{} = {}\n".format(k,v)
-		return(sir)
+    def __repr__(self):
+        sir=""
+        for (k,v) in self.__dict__.items() :
+            sir+="{} = {}\n".format(k,v)
+        return(sir)
 
 def init():
     if len(sys.argv) != 5:
@@ -181,7 +231,6 @@ def init():
             print("Provided arguments are of wrong type, exiting...")
             sys.exit(0)
     return dir_in, dir_out, nsol, timeout
-
 
 def make_files(dir_in, dir_out):
     try:
@@ -261,19 +310,6 @@ def read_one(paths_in, paths_out, current_fis=0):
 
     return time_begin, time_end, autobuze, oameni, nr_oameni
 
-def make_scop(nod_start): #TODO: be careful of the fact that either you ll have no people at the end
-                    #      or each of their "remaining_dest" MUST be empty. I see no way to check
-                    #      against the fact that they must visit each destination in order.
-    oameni = []
-    for o in nod_start.oameni:
-        new_o = deepcopy(o)
-        new_o.remaining_dest = []
-        new_o.money = None
-    scop = NodInfo(None, )
-        
-
-
-    
 def a_star(gr, nrSolutiiCautate, tip_euristica):
 	#in coada vom avea doar noduri de tip NodParcurgere (nodurile din arborele de parcurgere)
 	c=[NodParcurgere(gr.start, None, 0, gr.calculeaza_h(gr.start))]
@@ -303,17 +339,29 @@ def a_star(gr, nrSolutiiCautate, tip_euristica):
 			else:
 				c.append(s)
 
+def timeToMinutes(timestamp):
+    # print(f"timestamp is {timestamp} and type is {type(timestamp)}\n")
+    if len(timestamp) == 5: #16:00
+        return int(timestamp[:2])*60 + int(timestamp[3])*10 + int(timestamp[4])
+    else: #len(timestamp) == 4 #8:00
+        return int(timestamp[0])*60 + int(timestamp[3])*10 + int(timestamp[4])
+
+
 
 def main():
     dir_in, dir_out, nrsol, timeout = init()
     paths_in, paths_out = make_files(dir_in, dir_out)
     for i in range(len(paths_in)):
         time_begin, time_end, autobuze, oameni, nr_oameni = read_one(paths_in, paths_out, i)
+        
+        time_begin = timeToMinutes(time_begin)
+        time_end = timeToMinutes(time_end)
+        print(f"\ntime_begin = {time_begin}, time_end = {time_end}, time_begin*2 == time_end = {time_begin*2 == time_end}\n")
 
-        nod_start =  NodParcurgere(0, NodInfo(autobuze, oameni, time_begin), None, 0, 0)
-        graf = Graph() #TODO
+        nod_start =  NodParcurgere(0, NodInfo(oameni, time_begin), None, 0, 0, autobuze)
+        graf = Graph(time_end, nod_start) #TODO
 
-        if noSol(nod_start):
+        if graf.nuAreSolutii(nod_start):
             print("Starea de inceput nu permite solutii")
             sys.exit(0)
         

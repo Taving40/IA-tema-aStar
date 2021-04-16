@@ -35,12 +35,30 @@ class Autobuz:
         self.metOm = [] #list of Om that autobuz has already passed by (used to check against so Om cannot board Autobuz after it has passed him by)
     
     def __str__(self):
-        return (f"id={self.id}\n"
-                f"price={self.price}\n"
-                f"break_duration={self.break_duration}\n"
-                f"trip_duration={self.trip_duration}\n"
-                f"om={self.om}\n")
+        return (f"id={self.id} "
+                f"price={self.price} "
+                f"break_duration={self.break_duration} "
+                f"trip_duration={self.trip_duration} "
+                f"om={self.om} "
+                f"current_loc={self.destinations[self.current_loc]}")
     
+    def unmeetLoc(self, loc): #method to remove Om as having been met by Autobuz (if he changed locations since he was met he is again given the chance to board)
+        to_remove = None
+        for i in range(len(self.metOm)):
+            if self.metOm[i][1] == loc:
+                to_remove = self.metOm[i]
+        if to_remove != None:
+            self.metOm.remove(to_remove)
+            print(f"\n{to_remove[0].name} was removed from banned list because bus reached {loc}\n")
+
+    def hasMet(self, om): #method to see if Om was previously met by Autobuz (and thus should not be given a chance to board)
+        wasMet = False
+        for i in range(len(self.metOm)):
+            if self.metOm[i][0].name == om.name:
+                wasMet = True
+                break
+        return wasMet
+
     def updateOmLocation(self):
         if self.om != None:
             self.om.current_loc = self.destinations[self.current_loc]
@@ -59,7 +77,7 @@ class Autobuz:
         
         else:
             if 0 == self.current_loc: #if Autobuz reaches leftmost destination, it also takes a break and changes directions
-                self.direction_forward = True
+                self.direction_forward = True #Autobuz changes direction
                 self.updateOmLocation()
                 return self.destinations[self.current_loc],  (self.break_duration + self.trip_duration)
             
@@ -75,7 +93,7 @@ class Om:
         self.destinations = destinations
         self.remaining_dest = destinations[1:]
         self.current_loc = destinations[0] 
-        self.state = "waiting" #can be "waiting" or "in_bus"
+        self.state = "waiting" #can be "waiting" or "travelling"
         self.autobuz = None #Autobuz id
 
     def isDone(self):
@@ -90,12 +108,12 @@ class Om:
             self.remaining_dest = self.remaining_dest[1:]
 
     def __str__(self):
-        return (f"name={self.name}\n"
-                f"money={self.money}\n"
-                f"current_loc={self.remaining_dest[0]}\n"
-                f"first_dest={self.destinations[0]}\n"
-                f"state={self.state}\n"
-                f"autobuz={self.autobuz}\n")
+        return (f"name={self.name} "
+                f"money={self.money} "
+                f"current_loc={self.current_loc} "
+                f"first_dest={self.destinations[0]} "
+                f"state={self.state} "
+                f"autobuz={self.autobuz}")
 
 class NodInfo:
     def __init__(self, oameni, autobuze, time):
@@ -126,10 +144,10 @@ class NodParcurgere:
         self.f = self.g + self.h
 
     def obtineDrum(self):
-        l = [self.info]
+        l = [str(self.info)]
         nod = self
         while nod.parinte is not None:
-            l.insert(0, nod.parinte.info)
+            l.insert(0, str(nod.parinte.info))
             nod = nod.parinte
         return l
 		
@@ -139,10 +157,10 @@ class NodParcurgere:
         print("Cost: ", self.g)
         return len(l)
 
-    def contineInDrum(self, infoNodNou):
+    def contineInDrum(self, NodNou):
         nodDrum = self
         while nodDrum is not None:
-            if(infoNodNou == nodDrum.info):
+            if(NodNou.info == nodDrum.info):
                 return True
             nodDrum = nodDrum.parinte
 		
@@ -171,17 +189,17 @@ class NodParcurgere:
                 noSol = True
                 break
             else:
-                set_destinatii.add(o.currnet_loc)
+                set_destinatii.add(o.current_loc)
 
         return noSol
 
     def __str__(self):
         sir = ""
         sir += str(self.info)+"("
-        sir += "drum="
-        drum = self.obtineDrum()
-        sir += ("->").join(drum)
-        sir += " g:{}".format(self.g)
+        #sir += "drum="
+        #drum = self.obtineDrum()
+        #sir += ("->").join(drum)
+        sir += "g:{}".format(self.g)
         sir += " h:{}".format(self.h)
         sir += " f:{})".format(self.f)
         return sir
@@ -192,11 +210,11 @@ class Graph: #TODO
         self.start = nod_start
         self.nodCurent = nod_start
 
-    def testeaza_scop(self, nodCurent): #TODO: be careful of the fact that either you ll have no people at the end
+    def testeaza_scop(self, nodInfo): #TODO: be careful of the fact that either you ll have no people at the end
                                         #      or each of their "remaining_dest" MUST be empty. I see no other way to check
                                         #      against the fact that they must visit each destination in order.
         isScop = True
-        for o in nodCurent.info.oameni:
+        for o in nodInfo.oameni:
             if o.remaining_dest != []:
                 isScop = False
                 break
@@ -205,7 +223,7 @@ class Graph: #TODO
     def nuAreSolutii(self, nod): 
         return nod.noSol()       
 
-    def genereazaSuccesori(self, nodCurent, tip_euristica="euristica banala"):
+    def genereazaSuccesori(self, nodCurent, tip_euristica="euristica banala"): #TODO: handle events for when buses first start and there s someone there already
         listaSuccesori=[]
 
         if self.nuAreSolutii(nodCurent):
@@ -213,15 +231,33 @@ class Graph: #TODO
 
         tempNod = deepcopy(nodCurent) #might cause issues related to field "parinte"
 
-        timpCurent = tempNod.info.timestamp
+        timpCurent = tempNod.info.time
         autobuzeCurent = tempNod.info.autobuze
         oameniCurent = tempNod.info.oameni
 
+        print("-"*30 + "\nStarting state:\nAutobuze:")
+        for a in nodCurent.info.autobuze:
+            print(f"{a.id} is at {a.destinations[a.current_loc]} and has {a.om} inside")
+        for o in nodCurent.info.oameni:
+            print(f"{o.name} is at {o.current_loc} and is in {o.autobuz}")
+
         while(timpCurent < self.time_end): #iterate over all possible events from current time until end time
+
+            # print(f"timpCurent = {timpCurent} time_end = {self.time_end}")
+            # print(f"Autobuze: {tempNod.info.autobuze[0]}")
+
+            if self.nuAreSolutii(tempNod):
+                break
+
             #iterate over autobuz
             for i in range(len(autobuzeCurent)):
 
                 posEvent = autobuzeCurent[i].getNextDest() #possible event triggered when Autobuz reaches next station
+
+                if autobuzeCurent[i].om != None:
+                    print(f"Bus {autobuzeCurent[i].id} is now at {autobuzeCurent[i].destinations[autobuzeCurent[i].current_loc]} and has {autobuzeCurent[i].om.name} inside")
+                else:
+                    print(f"Bus {autobuzeCurent[i].id} is now at {autobuzeCurent[i].destinations[autobuzeCurent[i].current_loc]} and has no one inside")
 
                 #decide if it actually is event
                 temp_loc = posEvent[0]
@@ -232,44 +268,83 @@ class Graph: #TODO
                 #(changing tempNod not nodCurent as parent node must stay the same)
                 #timpCurent is now equal to when the current Autobuz has reached its next station
 
-                #iterate over oameni and check their locations
+                #iterate over oameni not in Autobuz and check their locations
                 for j in range(len(oameniCurent)):
-                    if oameniCurent[j].current_loc == temp_loc:
+                    if oameniCurent[j].autobuz == None and oameniCurent[j].current_loc == temp_loc:
                         posOm = j
                         break
 
-                if oameniCurent[posOm] != None and autobuzeCurent[i].om != None: 
-                    continue #covering case when Om is in station and Autobuz arrives but already has Om inside
+                if posOm == None: #remove previously encountered Om that has since changed position
+                    autobuzeCurent[i].unmeetLoc(temp_loc)
+                    # print(f"removed {temp_loc} from bus {autobuzeCurent[i].id} (which has inside {autobuzeCurent[i].om}) banned list ")
+                    
+                #covering case when Om is in station and Autobuz arrives but already has Om inside
+                if posOm != None and oameniCurent[posOm] != None and autobuzeCurent[i].om != None: 
+                    print(f"parent is: {nodCurent}\n\n, found {oameniCurent[posOm]}\n\n and {autobuzeCurent[i].om}\n\n\n\n\n\n")
+                    
+                    autobuzeCurent[i].metOm.append((oameniCurent[posOm], temp_loc)) #register Om as having not gotten on this Autobuz, so that he cannot take it until he changes positions
+                    print(f"{oameniCurent[posOm].name} was added to banned list")
+                    continue 
 
-                elif oameniCurent[posOm] != None: #if there is an Om at station and Autobuz is empty (generate successor where Om boards)
+                #if there is an Om at station and Autobuz is empty (generate successor where Om boards)
+                elif posOm != None and oameniCurent[posOm] != None: 
+                    
+                    print(f"{oameniCurent[posOm].name} was met", end="")
+                    if autobuzeCurent[i].hasMet(oameniCurent[posOm]): #if person chose not to board the first time, we ignore
+                        print(f" and didnt board because he is banned")
+                        continue
+                    print(f" and boarded bus {autobuzeCurent[i].id}")
+
+                    go_back_to = deepcopy(oameniCurent[posOm])
 
                     oameniCurent[posOm].autobuz = autobuzeCurent[i].id
                     oameniCurent[posOm].stare = "travelling"
-                    oameniCurent[posOm].money -= autobuzeCurent[i].price #TODO: decide if it s worth to check whether Om has enough money left to pay price (already checking in NodParcurgere.noSol())
+                    oameniCurent[posOm].money -= autobuzeCurent[i].price
                     autobuzeCurent[i].om = deepcopy(oameniCurent[posOm]) #deepcopy just to be sure
 
                     info = NodInfo(oameniCurent, autobuzeCurent, timpCurent) #lists provided to new NodInfo and new NodParcurgere are changed from tempNod not nodCurent (because nodCurent must NOT change)
-                    nod_nou = NodParcurgere(info, nodCurent, autobuzeCurent[i].price + (timpCurent - nodCurent.timestamp), self.calculeaza_h(info))
+                    nod_nou = NodParcurgere(info, nodCurent, autobuzeCurent[i].price + (timpCurent - nodCurent.info.time), self.calculeaza_h(info))
                     #cost is the price for boarding + (time after Autobuz reached new station - time of parent node)
-                    listaSuccesori.append(nod_nou) #add successor to list
+                    if not nodCurent.contineInDrum(nod_nou):
+                        listaSuccesori.append(nod_nou)
                     
-                    autobuzeCurent[i].metOm.append(oameniCurent[posOm]) #for future events, we consider that this Om did not board the Autobuz
+                    #for future events, we consider that this Om did not board the Autobuz
+                    autobuzeCurent[i].metOm.append((oameniCurent[posOm], temp_loc)) 
+                    oameniCurent[posOm] = go_back_to
+                    autobuzeCurent[i].om = None
+                    print(f"{oameniCurent[posOm].name} was added to banned list")
 
-                elif autobuzeCurent[i].om != None: #if station is empty and Autobuz has Om inside (generate successor where Om unboards)
+                #if station is empty and Autobuz has Om inside (generate successor where Om unboards)
+                elif posOm == None and autobuzeCurent[i].om != None: 
 
-                    oameniCurent[posOm].autobuz = None
-                    oameniCurent[posOm].stare = "waiting"
+                    #find om object in oameniCurent so that we change the actual Nod
+                    temp_om = autobuzeCurent[i].om.name
+                    for j in range(len(oameniCurent)):
+                       if temp_om == oameniCurent[j].name:
+                           temp_om = j
+                           break 
+
+                    go_back_to = deepcopy(oameniCurent[temp_om])
+
+                    oameniCurent[temp_om].autobuz = None
+                    oameniCurent[temp_om].stare = "waiting"
+
+                    #update the remaining destinations for Om if this station was first in his remaining destinations list
+                    if oameniCurent[temp_om].remaining_dest != [] and oameniCurent[temp_om].remaining_dest[0] == temp_loc:
+                        oameniCurent[temp_om].hasVisitedNext()
+
                     autobuzeCurent[i].om = None
 
-                    #check if Om has reached his next target destination
-                    if oameniCurent[posOm].remaining_dest[0] == temp_loc:
-                        oameniCurent[posOm].hasVisitedNext()
-
                     info = NodInfo(oameniCurent, autobuzeCurent, timpCurent)
-                    nod_nou = NodParcurgere(info, nodCurent, (timpCurent - nodCurent.timestamp), self.calculeaza_h(info))
-                    listaSuccesori.append(nod_nou)
+                    nod_nou = NodParcurgere(info, nodCurent, (timpCurent - nodCurent.info.time), self.calculeaza_h(info))
 
+                    if not nodCurent.contineInDrum(nod_nou):
+                        listaSuccesori.append(nod_nou)
+                    
                     #for future events, we consider that this Om stayed in Autobuz 
+                    oameniCurent[temp_om] = go_back_to
+                    autobuzeCurent[i].om = oameniCurent[temp_om]
+
                 
         return listaSuccesori
 
@@ -365,7 +440,7 @@ def read_one(paths_in, paths_out, current_fis=0):
         price = float(line_spaces[1][:-3])
         break_duration = int(line_spaces[2][:-3])
         trip_duration = int(line_spaces[3][:-3])
-        path = [get_dest(line_dest[1])] + get_multiple_dest(line_dest[1:])
+        path = [get_dest(line_dest[0])] + get_multiple_dest(line_dest[1:])
         autobuze.append( Autobuz(id, price, break_duration, trip_duration, path) )
 
         line = f.readline()
@@ -387,37 +462,39 @@ def read_one(paths_in, paths_out, current_fis=0):
 
     return time_begin, time_end, autobuze, oameni, nr_oameni
 
-def a_star(gr, nrSolutiiCautate, tip_euristica):
-	#in coada vom avea doar noduri de tip NodParcurgere (nodurile din arborele de parcurgere)
-	c=[NodParcurgere(gr.start, None, 0, gr.calculeaza_h(gr.start))]
-	
-	while len(c) > 0:
-		nodCurent = c.pop(0)
-		
-		if gr.testeaza_scop(nodCurent):
-			print("Solutie: ")
-			nodCurent.afisDrum(afisCost=True, afisLung=True)
-			print("\n----------------\n")
-			input()
-			nrSolutiiCautate -= 1
-			if nrSolutiiCautate == 0:
-				return
-		lSuccesori=gr.genereazaSuccesori(nodCurent, tip_euristica=tip_euristica)	
-		for s in lSuccesori:
-			i = 0
-			gasit_loc = False
-			for i in range(len(c)):
-				#diferenta fata de UCS e ca ordonez dupa f
-				if c[i].f >= s.f :
-					gasit_loc = True
-					break
-			if gasit_loc:
-				c.insert(i,s)
-			else:
-				c.append(s)
+def a_star(gr, nrSolutiiCautate, tip_euristica): #TODO: to remember when printing: if Om is "waiting" it means he has unboarded and if he is "travelling" it means he has boarded
+    #in coada vom avea doar noduri de tip NodParcurgere (nodurile din arborele de parcurgere)
+    c=[NodParcurgere(gr.start.info, None, 0, gr.calculeaza_h(gr.start.info))]
+
+    while len(c) > 0:
+        nodCurent = c.pop(0)
+        
+        if gr.testeaza_scop(nodCurent.info):
+            print("Solutie: ")
+            # nodCurent.afisDrum(afisCost=True, afisLung=True)
+            nodCurent.afisDrum()
+            print("\n----------------\n")
+            input()
+            nrSolutiiCautate -= 1
+            if nrSolutiiCautate == 0:
+                return
+        lSuccesori=gr.genereazaSuccesori(nodCurent, tip_euristica=tip_euristica)	
+        for s in lSuccesori:
+            i = 0
+            print("-"*30 + "\n" + s.info.oameni[0].current_loc + "\n")
+            gasit_loc = False
+            for i in range(len(c)):
+                #diferenta fata de UCS e ca ordonez dupa f
+                if c[i].f >= s.f :
+                    gasit_loc = True
+                    break
+            if gasit_loc:
+                c.insert(i,s)
+            else:
+                c.append(s)
 
 def timeToMinutes(timestamp):
-    if len(timestamp) == 6: 
+    if len(timestamp) == 5: 
         return int(timestamp[0])*600 + int(timestamp[1])*60 + int(timestamp[3])*10 + int(timestamp[4])
     return None
 
@@ -428,19 +505,31 @@ def timeToMinutes(timestamp):
 def main():
     dir_in, dir_out, nrsol, timeout = init()
     paths_in, paths_out = make_files(dir_in, dir_out)
-    for i in range(len(paths_in)):
+    for i in [0]:#range(len(paths_in)):
+        print("-"*20 + "pt input nr {}".format(i) + "-"*20)
+
         time_begin, time_end, autobuze, oameni, nr_oameni = read_one(paths_in, paths_out, i)
 
         time_begin = timeToMinutes(time_begin)
         time_end = timeToMinutes(time_end)
         # print(f"\ntime_begin = {time_begin}, time_end = {time_end}, time_begin*2 == time_end = {time_begin*2 == time_end}\n")
 
-        nod_start =  NodParcurgere(NodInfo(oameni, autobuze, time_begin), None, 0, 0)
-        graf = Graph(time_end, nod_start) #TODO
+        info = NodInfo(oameni, autobuze, time_begin)
+        nod_start =  NodParcurgere(info, None, 0, 0)
+        graf = Graph(time_end, nod_start) #TODO: test genereazaSuccesori
+        nod_start.graf = graf
 
         if graf.nuAreSolutii(nod_start):
             print("Starea de inceput nu permite solutii")
             sys.exit(0)
+
+        # succesori_start = graf.genereazaSuccesori(nod_start)
+
+        # for s in succesori_start:
+        #     print(s)
+
+        a_star(graf, 1, "euristica banala")
+
         
 
 

@@ -1,5 +1,5 @@
-08:00 16:00
-100 1lei 1min 10min "A","B","C","D","E"
+08:00 09:00
+100 1lei 1min 1min "A","B","C","D","E"
 1 oameni
 Ionel 100lei "A","E"
 

@@ -160,6 +160,10 @@ class NodParcurgere:
         return l
 		
     def afisDrum(self):
+        # TODO:
+        # check state of oameni from current node against previous node
+        # if state changed or not
+        # if it changed from travelling to waiting or otherwise 
         l = self.obtineDrum()
         print(("->").join(l))
         print("Cost: ", self.g)
@@ -212,7 +216,7 @@ class NodParcurgere:
         sir += " f:{})".format(self.f)
         return sir
 
-class Graph: #TODO 
+class Graph: 
     def __init__(self, time_end, nod_start):
         self.time_end = time_end
         self.start = nod_start
@@ -229,15 +233,8 @@ class Graph: #TODO
     def nuAreSolutii(self, nod): 
         return nod.noSol()       
 
-    #TODO: timpCurent is wrong. When going to the next autobuz to increment its location
-    #       Im incrementing it as if no time had passed from the starting positions
-    #       BUT time did in fact pass as all the previous Autobuze had moved
-    #       SO I need to fix it so that when I move an Autobuz to its next destination
-    #       I increment timpCurent only by whatever it is needed (if at all)
-    #       
-    #       if Autobuz100 has trip_duration of 10 and Autobuz200 also of 10
-    #       they reach next dest SIMULTANEOUSLY at T=10 as opposed to one reaching it at T=10 and the other at T=20 
-    def genereazaSuccesori(self, nodCurent, tip_euristica="euristica banala"): #TODO: handle events for when buses first start and there s someone there already
+    #TODO: handle events for when buses first start and there s someone there already
+    def genereazaSuccesori(self, nodCurent, tip_euristica="euristica banala"): 
         listaSuccesori=[]                                                           
                                                                                 
         if self.nuAreSolutii(nodCurent):
@@ -256,7 +253,11 @@ class Graph: #TODO
         #     print(f"{o.name} is at {o.current_loc} and is in {o.autobuz}")
         # print("\n\n")
 
+        nr_of_loops = 0
+
         while(timpCurent < self.time_end): #iterate over all possible events from current time until end time
+
+            nr_of_loops += 1
 
             if self.nuAreSolutii(tempNod):
                 print("\nOprit din generat pentru ca nu mai am solutii\n")
@@ -277,8 +278,11 @@ class Graph: #TODO
                 temp_est_time = posEvent[1]
                 posOm = None #possible Om met in station, remains None if no Om in station
 
-                timpCurent += temp_est_time #no matter whether Om changes states, we still consider the trip of the Autobuz to have taken place
-                #(changing tempNod not nodCurent as parent node must stay the same)
+                if timpCurent - nodCurent.info.time >= temp_est_time * nr_of_loops:
+                    pass
+                else:
+                    timpCurent += temp_est_time * nr_of_loops - (timpCurent - nodCurent.info.time) #add just how much time would pass for Autobuz to reach next dest
+                #no matter whether Om changes states, we still consider the trip of the Autobuz to have taken place
                 #timpCurent is now equal to when the current Autobuz has reached its next station
 
                 #iterate over oameni not in Autobuz and check their locations

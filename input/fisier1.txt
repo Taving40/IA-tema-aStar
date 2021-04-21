@@ -1,6 +1,6 @@
 08:00 09:00
-100 1lei 1min 1min "A","B","C","D"
-200 1lei 1min 1min "X","Y","Z"
+100 1lei 1min 1min "A","B","S"
+200 1lei 1min 1min "X","Y","S"
 2 oameni
-Ionel 100lei "D","A","C"
-Gigel 100lei "Y","Z"
+Ionel 10lei "A","X"
+Gigel 10lei "X","A"

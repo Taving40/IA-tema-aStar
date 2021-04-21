@@ -85,22 +85,29 @@ class Autobuz:
 
     def getCurrentDest(self, time_begin, time_actual, oameni=None): 
         time_decal = time_actual - time_begin
-        #current_dest_index = time_decal % (len(self.destinations) * self.trip_duration + self.break_duration) formula for smarter way of calculating dest
+
+        temp_oameni_loc = {}
+        for o in oameni:
+            temp_oameni_loc[o.current_loc] = o
         temp_copy = deepcopy(self)
-        temp_copy.current_loc = len(temp_copy.destinations)-1
-        temp_copy.direction_forward = False
+
         while time_decal >= 0:
-            _, time = temp_copy.getNextDest()
-            #TODO: add met people to metOm?
+            station, time = temp_copy.getNextDest()
+            if station in temp_oameni_loc.keys():
+                temp_copy.metOm.append((temp_oameni_loc[station], station))
+            else:
+                for met_om in temp_copy.metOm:
+                    if met_om[1] == station:
+                        temp_copy.metOm.remove(met_om)
             time_decal -= time
         if temp_copy.direction_forward and temp_copy.current_loc == 0:
-            return temp_copy.destinations[0], 0, temp_copy.direction_forward
+            return temp_copy.destinations[0], 0, temp_copy.direction_forward, temp_copy.metOm
         elif temp_copy.direction_forward and temp_copy.current_loc != 0:
-            return temp_copy.destinations[temp_copy.current_loc-1], temp_copy.current_loc-1, temp_copy.direction_forward
+            return temp_copy.destinations[temp_copy.current_loc-1], temp_copy.current_loc-1, temp_copy.direction_forward, temp_copy.metOm
         elif not temp_copy.direction_forward and temp_copy.current_loc == len(temp_copy.destinations)-1:
-            return temp_copy.destinations[len(temp_copy.destinations)-1], len(temp_copy.destinations)-1, temp_copy.direction_forward
+            return temp_copy.destinations[len(temp_copy.destinations)-1], len(temp_copy.destinations)-1, temp_copy.direction_forward, temp_copy.metOm
         elif not temp_copy.direction_forward and temp_copy.current_loc != len(temp_copy.destinations)-1:
-            return temp_copy.destinations[temp_copy.current_loc+1], temp_copy.current_loc+1, temp_copy.direction_forward
+            return temp_copy.destinations[temp_copy.current_loc+1], temp_copy.current_loc+1, temp_copy.direction_forward, temp_copy.metOm
 
 
 class Om:
@@ -266,6 +273,8 @@ class Graph:
 
     def testeaza_scop(self, nodInfo): 
         isScop = True
+        if nodInfo.oameni == []:
+            return isScop
         for o in nodInfo.oameni:
             if o.remaining_dest != []:
                 isScop = False
@@ -365,8 +374,6 @@ class Graph:
 
                 #IF station is empty and Autobuz has Om inside (generate successor where Om unboards)
                 elif posOm == None and autobuzeCurent[i].om != None: 
-                    # print("\nAm intrat pe cazul in care am om in autobuz si nimeni in statie.\n")
-                    # print(f"\nRn, {autobuzeCurent[i].om.name} is at {autobuzeCurent[i].om.current_loc}\n")
 
                     #find om object in oameniCurent so that we change the actual Nod
                     temp_om = autobuzeCurent[i].om.name
@@ -377,9 +384,7 @@ class Graph:
 
                     oameniCurent[temp_om].current_loc = autobuzeCurent[i].om.current_loc #update location of Om from oameni to same Om from inside Autobuz
 
-                    # print(f"\n {oameniCurent[temp_om].name} is at {oameniCurent[temp_om].current_loc}")
                     go_back_to = deepcopy(oameniCurent[temp_om])
-                    # print(f"\ngo_back_to este {go_back_to}\n")
                     oameniCurent[temp_om].autobuz = None
                     oameniCurent[temp_om].state = "waiting"
 
@@ -399,10 +404,6 @@ class Graph:
                     autobuzeCurent[i].om = oameniCurent[temp_om]
                     oameniCurent[temp_om].state = "travelling"
 
-                    # if not nodCurent.contineInDrum(nod_nou):
-                    #     listaSuccesori.append(nod_nou)
-                    #     print(f"\n\nAm generat si adaugat in lista de succesori urmatorul nod: {listaSuccesori[-1]}\n\n")
-
                     #if Autobuz is also going to break, forcefully terminate method (since there is no other action that could be taken)
                     if autobuzeCurent[i].goingToBreak():
                         # print(f"{autobuzeCurent[i].om.name} got off at last possible station, no further successors exist for this node")
@@ -413,33 +414,12 @@ class Graph:
 
         for i in range(len(lista_events)):
 
-            if (nodCurent.info.event != None and
-                lista_events[i].tip == "unboarding" and 
-                nodCurent.info.event.tip == "boarding" and
-                nodCurent.info.event.om.name == lista_events[i].om.name and
-                nodCurent.info.event.om.current_loc == lista_events[i].om.current_loc and 
-                nodCurent.info.event.time == lista_events[i].time):
-                continue #Om cannot unboard right after boarding
-
-            if (nodCurent.info.event != None and
-                lista_events[i].tip == "boarding" and 
-                nodCurent.info.event.tip == "unboarding" and
-                nodCurent.info.event.om.name == lista_events[i].om.name and
-                nodCurent.info.event.om.current_loc == lista_events[i].om.current_loc and
-                nodCurent.info.event.time == lista_events[i].time):
-                continue #Om cannot board right after unboarding
-
             if (lista_events[i].om.last_action != None and
                 lista_events[i].tip != lista_events[i].om.last_action[0] and
                 lista_events[i].autobuz.id == lista_events[i].om.last_action[1] and
                 lista_events[i].om.current_loc == lista_events[i].om.last_action[2] and
                 lista_events[i].time == lista_events[i].om.last_action[3]):
-                continue #same as above but works accross Graph "layers"
-
-            #TODO: find way to prevent Om from doing these 2 actions^^^^ no matter the depth of node
-            #currently Om unboards, new event happens and he boards again
-            
-            # print(lista_events[i])
+                continue #prevent Om from unboarding/boarding right after boarding/unboarding from the SAME Autobuz at the SAME timestamp
 
             autobuze_new = deepcopy(nodCurent.info.autobuze)
             oameni_new = deepcopy(nodCurent.info.oameni)
@@ -448,10 +428,14 @@ class Graph:
                     autobuze_new[j] = lista_events[i].autobuz
                 else:
                     print(f"{autobuze_new[j].id} updated {autobuze_new[j].destinations[autobuze_new[j].current_loc]} to ", end="")
-                    x, autobuze_new[j].current_loc, autobuze_new[j].direction_forward = autobuze_new[j].getCurrentDest(self.start.info.time, lista_events[i].time, oameni_new)
+                    (x, 
+                    autobuze_new[j].current_loc, 
+                    autobuze_new[j].direction_forward,
+                    autobuze_new[j].metOm) = autobuze_new[j].getCurrentDest(nodCurent.info.time, lista_events[i].time, oameni_new) #self.start.info.time
                     if autobuze_new[j].om != None:
                         autobuze_new[j].om.current_loc = autobuze_new[j].destinations[autobuze_new[j].current_loc]
                     print(x + f" given params: start_time={self.start.info.time}, actual_time={lista_events[i].time}")
+
             for j in range(len(oameni_new)):
                 if oameni_new[j].name == lista_events[i].om.name:
                     oameni_new[j] = lista_events[i].om
@@ -460,7 +444,9 @@ class Graph:
                     for k in range(len(autobuze_new)):
                         if autobuze_new[k].om != None and autobuze_new[k].om.name == oameni_new[j].name:
                             oameni_new[j].current_loc = autobuze_new[k].om.current_loc
-
+            for o in oameni_new:
+                if o.remaining_dest == []:
+                    oameni_new.remove(o)
             
 
             info_new = NodInfo(oameni_new, autobuze_new, lista_events[i].time, deepcopy(lista_events[i]))
@@ -602,7 +588,6 @@ def a_star(gr, nrSolutiiCautate, tip_euristica): #TODO: to remember when printin
             print("Solutie: ")
             # nodCurent.afisDrum(afisCost=True, afisLung=True)
             nodCurent.afisDrum()
-            print(nodCurent.info.oameni[0].remaining_dest)
             print("\n----------------\n")
             input()
             nrSolutiiCautate -= 1

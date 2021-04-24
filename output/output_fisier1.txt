@@ -1,148 +1,816 @@
-Solutii pentru a_star, cu euristica banala
--------------------------
+Solutii pentru uniform_cost, cu euristica banala
+*************************************
+
+
 Solutie: 
 1)
 08:00
-Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
 Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
-Cost pana acum 1.0
+Cost pana acum 2.0
 2)
 08:02
-Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia B pe traseul D->C->B. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 0.
-Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 2.
-Cost pana acum 4.0
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
 3)
-08:02
-Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 0.
-Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 2.
-Cost pana acum 4.0
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
 4)
 08:04
-Omul Gigel a coborat in statia X din autobuzul 200. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 2.
-Cost pana acum 6.0
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:05
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 2.
+Omul Gigel așteaptă în stația X. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 3.
+Cost pana acum 12.0
+6)
+08:06
+Omul Ionel se deplasează cu autobuzul 100 de la statia A la statia B pe traseul A->B. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:06
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 527
+Solutia a fost gasita in 0.4205915927886963
+----------------
+Solutii pentru uniform_cost, cu euristica admisibila 1
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:05
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 2.
+Omul Gigel așteaptă în stația X. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 3.
+Cost pana acum 12.0
+6)
+08:06
+Omul Ionel se deplasează cu autobuzul 100 de la statia A la statia B pe traseul A->B. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:06
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 527
+Solutia a fost gasita in 0.42673587799072266
+----------------
+Solutii pentru uniform_cost, cu euristica admisibila 2
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:05
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 2.
+Omul Gigel așteaptă în stația X. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 3.
+Cost pana acum 12.0
+6)
+08:06
+Omul Ionel se deplasează cu autobuzul 100 de la statia A la statia B pe traseul A->B. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:06
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 527
+Solutia a fost gasita in 0.5093388557434082
+----------------
+Solutii pentru uniform_cost, cu euristica neadmisibila
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:05
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 2.
+Omul Gigel așteaptă în stația X. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 3.
+Cost pana acum 12.0
+6)
+08:06
+Omul Ionel se deplasează cu autobuzul 100 de la statia A la statia B pe traseul A->B. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:06
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 527
+Solutia a fost gasita in 0.42081165313720703
+----------------
+Solutii pentru a_star, cu euristica banala
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
 5)
 08:06
-Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 4.
-Cost pana acum 9.0
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 14.0
 6)
+08:06
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:07
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 3. Timp asteptare: 4.
+Cost pana acum 17.0
+8)
 08:10
-Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 98.0lei. Timp mers: 6. Timp asteptare: 4.
-Cost pana acum 13.0
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
 
-Lungimea drumului este: 6
-Costul drumului este: 13.0
-Numarul maxim de noduri in memorie: 6
-Numarul total de noduri calculate este: 844
-Solutia a fost gasita in 0.6013209819793701
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 496
+Solutia a fost gasita in 0.4035210609436035
 ----------------
 Solutii pentru a_star, cu euristica admisibila 1
--------------------------
+*************************************
+
+
 Solutie: 
 1)
 08:00
-Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
 Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
-Cost pana acum 1.0
+Cost pana acum 2.0
 2)
 08:02
-Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia B pe traseul D->C->B. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 0.
-Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 2.
-Cost pana acum 4.0
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
 3)
-08:02
-Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 0.
-Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 2.
-Cost pana acum 4.0
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
 4)
 08:04
-Omul Gigel a coborat in statia X din autobuzul 200. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 2.
-Cost pana acum 6.0
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
 5)
 08:06
-Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 4.
-Cost pana acum 9.0
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 14.0
 6)
+08:06
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:07
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 3. Timp asteptare: 4.
+Cost pana acum 17.0
+8)
 08:10
-Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 98.0lei. Timp mers: 6. Timp asteptare: 4.
-Cost pana acum 13.0
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
 
-Lungimea drumului este: 6
-Costul drumului este: 13.0
-Numarul maxim de noduri in memorie: 6
-Numarul total de noduri calculate este: 844
-Solutia a fost gasita in 0.7186839580535889
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 496
+Solutia a fost gasita in 0.4007687568664551
 ----------------
 Solutii pentru a_star, cu euristica admisibila 2
--------------------------
+*************************************
+
+
 Solutie: 
 1)
 08:00
-Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
 Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
-Cost pana acum 1.0
+Cost pana acum 2.0
 2)
 08:02
-Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia B pe traseul D->C->B. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 0.
-Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 2.
-Cost pana acum 4.0
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
 3)
-08:02
-Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 0.
-Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 2.
-Cost pana acum 4.0
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
 4)
 08:04
-Omul Gigel a coborat in statia X din autobuzul 200. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 2.
-Cost pana acum 6.0
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
 5)
 08:06
-Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 4.
-Cost pana acum 9.0
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 14.0
 6)
+08:06
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:07
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 3. Timp asteptare: 4.
+Cost pana acum 17.0
+8)
 08:10
-Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 98.0lei. Timp mers: 6. Timp asteptare: 4.
-Cost pana acum 13.0
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
 
-Lungimea drumului este: 6
-Costul drumului este: 13.0
-Numarul maxim de noduri in memorie: 6
-Numarul total de noduri calculate este: 844
-Solutia a fost gasita in 0.7271151542663574
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 496
+Solutia a fost gasita in 0.42572021484375
 ----------------
 Solutii pentru a_star, cu euristica neadmisibila
--------------------------
+*************************************
+
+
 Solutie: 
 1)
 08:00
-Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
 Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
-Cost pana acum 1.0
+Cost pana acum 2.0
 2)
 08:02
-Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia B pe traseul D->C->B. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 0.
-Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 2.
-Cost pana acum 4.0
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
 3)
-08:02
-Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 0.
-Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 99.0lei. Timp mers: 0. Timp asteptare: 2.
-Cost pana acum 4.0
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
 4)
 08:04
-Omul Gigel a coborat in statia X din autobuzul 200. Buget: 99.0lei. Timp mers: 2. Timp asteptare: 2.
-Cost pana acum 6.0
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
 5)
 08:06
-Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 4.
-Cost pana acum 9.0
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 14.0
 6)
+08:06
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:07
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 3. Timp asteptare: 4.
+Cost pana acum 17.0
+8)
 08:10
-Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 98.0lei. Timp mers: 6. Timp asteptare: 4.
-Cost pana acum 13.0
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
 
-Lungimea drumului este: 6
-Costul drumului este: 13.0
-Numarul maxim de noduri in memorie: 6
-Numarul total de noduri calculate este: 844
-Solutia a fost gasita in 0.6615056991577148
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 496
+Solutia a fost gasita in 0.40573906898498535
+----------------
+Solutie pentru a_star_optimizat, cu euristica banala
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:06
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 14.0
+6)
+08:06
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:07
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 3. Timp asteptare: 4.
+Cost pana acum 17.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 423
+Solutia a fost gasita in 0.33367013931274414
+----------------
+Solutie pentru a_star_optimizat, cu euristica admisibila 1
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:06
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 14.0
+6)
+08:06
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:07
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 3. Timp asteptare: 4.
+Cost pana acum 17.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 423
+Solutia a fost gasita in 0.297316312789917
+----------------
+Solutie pentru a_star_optimizat, cu euristica admisibila 2
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:06
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 14.0
+6)
+08:06
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:07
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 3. Timp asteptare: 4.
+Cost pana acum 17.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 423
+Solutia a fost gasita in 0.3128199577331543
+----------------
+Solutie pentru a_star_optimizat, cu euristica neadmisibila
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:06
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 14.0
+6)
+08:06
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:07
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 3.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 3. Timp asteptare: 4.
+Cost pana acum 17.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 423
+Solutia a fost gasita in 0.3006298542022705
+----------------
+Solutii pentru ida_star, cu euristica banala
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:05
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 2.
+Omul Gigel așteaptă în stația X. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 3.
+Cost pana acum 12.0
+6)
+08:06
+Omul Ionel se deplasează cu autobuzul 100 de la statia A la statia B pe traseul A->B. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:06
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 28
+Solutia a fost gasita in 1.4500176906585693
+----------------
+Solutii pentru ida_star, cu euristica admisibila 1
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:05
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 2.
+Omul Gigel așteaptă în stația X. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 3.
+Cost pana acum 12.0
+6)
+08:06
+Omul Ionel se deplasează cu autobuzul 100 de la statia A la statia B pe traseul A->B. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:06
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 28
+Solutia a fost gasita in 1.3526761531829834
+----------------
+Solutii pentru ida_star, cu euristica admisibila 2
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:05
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 2.
+Omul Gigel așteaptă în stația X. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 3.
+Cost pana acum 12.0
+6)
+08:06
+Omul Ionel se deplasează cu autobuzul 100 de la statia A la statia B pe traseul A->B. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:06
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 28
+Solutia a fost gasita in 1.4717411994934082
+----------------
+Solutii pentru ida_star, cu euristica neadmisibila
+*************************************
+
+
+Solutie: 
+1)
+08:00
+Omul Ionel a urcat in statia D in autobuzul 100 pentru traseul D->C->B->A. Buget: 98.0lei. Timp mers: 0. Timp asteptare: 0.
+Omul Gigel așteaptă în stația Y. Buget: 100.0lei. Timp mers: 0. Timp asteptare: 0.
+Cost pana acum 2.0
+2)
+08:02
+Omul Ionel se deplasează cu autobuzul 100 de la statia D la statia A pe traseul D->C->B->A. Buget: 98.0lei. Timp mers: 2. Timp asteptare: 0.
+Omul Gigel a urcat in statia Y in autobuzul 200 pentru traseul Y->X. Buget: 97.0lei. Timp mers: 0. Timp asteptare: 2.
+Cost pana acum 7.0
+3)
+08:03
+Omul Ionel a coborat in statia A din autobuzul 100. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 0.
+Omul Gigel se deplasează cu autobuzul 200 de la statia Y la statia X pe traseul Y->X. Buget: 97.0lei. Timp mers: 1. Timp asteptare: 2.
+Cost pana acum 8.0
+4)
+08:04
+Omul Ionel așteaptă în stația A. Buget: 98.0lei. Timp mers: 3. Timp asteptare: 1.
+Omul Gigel a coborat in statia X din autobuzul 200. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 2.
+Cost pana acum 9.0
+5)
+08:05
+Omul Ionel a urcat in statia A in autobuzul 100 pentru traseul A->B. Buget: 96.0lei. Timp mers: 3. Timp asteptare: 2.
+Omul Gigel așteaptă în stația X. Buget: 97.0lei. Timp mers: 2. Timp asteptare: 3.
+Cost pana acum 12.0
+6)
+08:06
+Omul Ionel se deplasează cu autobuzul 100 de la statia A la statia B pe traseul A->B. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel a urcat in statia X in autobuzul 200 pentru traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+7)
+08:06
+Omul Ionel a coborat in statia B din autobuzul 100 si si-a terminat traseul. Buget: 96.0lei. Timp mers: 4. Timp asteptare: 2.
+Omul Gigel se deplasează cu autobuzul 200 de la statia X la statia Z pe traseul X->Y->Z. Buget: 94.0lei. Timp mers: 2. Timp asteptare: 4.
+Cost pana acum 16.0
+8)
+08:10
+Omul Gigel a coborat in statia Z din autobuzul 200 si si-a terminat traseul. Buget: 94.0lei. Timp mers: 6. Timp asteptare: 4.
+Cost pana acum 20.0
+
+Lungimea drumului este: 8
+Costul drumului este: 20.0
+Numarul maxim de noduri in memorie: 5
+Numarul total de noduri calculate este: 28
+Solutia a fost gasita in 1.497260570526123
 ----------------

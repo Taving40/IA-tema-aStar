@@ -3,9 +3,6 @@ import os
 from copy import deepcopy
 from func_timeout import func_timeout, FunctionTimedOut
 from time import time
-#TODO:
-# -figure out inputs
-# -write doc (?)
    
 class Autobuz:
     """Models a bus that can move according to a route and retain information about the person currently on-board
@@ -201,7 +198,6 @@ class Autobuz:
                     temp_copy.direction_forward, 
                     temp_copy.metOm)
 
-
 class Om:
     """Models a person that cantravel by bus and wishes to arrive at a list of stations in a specific order
 
@@ -326,7 +322,6 @@ class NodInfo:
         key = lambda buz1, buz2: buz1 if buz1.trip_duration <= buz2.trip_duration else buz2
         self.autobuze.sort(key=key)
     
-
 class NodParcurgere:
 
     def __init__(self, info, parinte, cost, h=0): 
@@ -382,8 +377,10 @@ class NodParcurgere:
             if l[i].info.event.tip == "boarding":
                 temp_traseu = [l[i].info.event.om.current_loc]
                 j = i
-                while l[j].info.event.tip != "unboarding" or l[j].info.event.om.name != l[i].info.event.om.name:
+                while j < len(l) and (l[j].info.event.tip != "unboarding" or l[j].info.event.om.name != l[i].info.event.om.name):
                     j += 1
+                if j >= len(l):
+                    return None
                 unboarding_loc = l[j].info.event.om.current_loc
                 direction = l[i].info.event.autobuz.direction_forward
                 index_boarding = l[i].info.event.autobuz.getIndexLoc(temp_traseu[0])
@@ -404,12 +401,12 @@ class NodParcurgere:
 
 
     def afisDrum(self): 
-        l = self.obtineDrum()
-        l = self.getInfoDrum(l)
         rez = ""
-        # for i in range(len(l)):
-        #     l[i] = str(l[i])
-        # print(("\n\n------------------------------->\n\n").join(l))
+        l = self.obtineDrum()
+        if len(l) == 1:
+            rez += f"Starea initiala este si finala\n"
+            return 1, rez + str(self)
+        l = self.getInfoDrum(l)
         
         for i in range(1, len(l)):
             # print(f"{i})\n{minutesToTime(l[i].info.time)}")
@@ -521,7 +518,7 @@ class Graph:
     def genereazaSuccesori(self, nodCurent, tip_euristica="euristica banala"): 
         listaSuccesori=[]                                                           
                                                                                 
-        if self.nuAreSolutii(nodCurent):
+        if self.nuAreSolutii(nodCurent) or self.testeaza_scop(nodCurent.info):
             return listaSuccesori
 
         tempNod = deepcopy(nodCurent)
@@ -531,19 +528,15 @@ class Graph:
         oameniCurent = tempNod.info.oameni
         lista_events = []
         
-        while(timpCurent < self.time_end): #iterate over all possible events from current time until end time
+        while(timpCurent < self.time_end): 
             if self.nuAreSolutii(tempNod):
                 # print("\nOprit din generat pentru ca nu mai am solutii\n")
                 break
 
-            # print(f"Ma uit peste autobuze la timpul: {timpCurent}")
-
             for i in range(len(autobuzeCurent)):
 
                 if timpCurent != nodCurent.info.time:
-                    # print(f"Verific daca autobuzul {autobuzeCurent[i].id} ajunge la urmatoarea statie: {(timpCurent - nodCurent.info.time)} / {autobuzeCurent[i].trip_duration} = {((timpCurent - nodCurent.info.time) / autobuzeCurent[i].trip_duration)}")
                     if ((timpCurent - self.start.info.time) / autobuzeCurent[i].trip_duration).is_integer(): #if current time decal from beginning time divides evenly into trip_duration of Autobuz that means it has reached its next dest
-                        # print("S-a verificat ca rezultatul e intreg")
                         posEvent = autobuzeCurent[i].getNextDest() #possible event triggered when Autobuz reaches next station
                     else:
                         continue
@@ -552,7 +545,6 @@ class Graph:
                 else: 
                     temp_loc = autobuzeCurent[i].destinations[autobuzeCurent[i].current_loc]
                 
-                
                 posOm = None 
                 for j in range(len(oameniCurent)):
                     if oameniCurent[j].autobuz == None and oameniCurent[j].current_loc == temp_loc:
@@ -560,7 +552,6 @@ class Graph:
                         break
                 if posOm == None: 
                     autobuzeCurent[i].unmeetLoc(temp_loc)
-                    # print(f"removed {temp_loc} from bus {autobuzeCurent[i].id} (which has inside {autobuzeCurent[i].om}) banned list ")
                 
                 # if posOm != None:
                     # print(f"La timpul {timpCurent}, ma uit daca am event pt autobuzul {autobuzeCurent[i].id}, cu omul {oameniCurent[posOm].name}")
@@ -573,7 +564,6 @@ class Graph:
                         break
                     
                     autobuzeCurent[i].metOm.append((oameniCurent[posOm], temp_loc)) 
-                    # print(f"{oameniCurent[posOm].name} was added to banned list (case 1)")
                     continue 
 
                 #IF there is an Om at station and Autobuz is empty (generate successor where Om boards)
@@ -586,7 +576,7 @@ class Graph:
 
                     # print(f"{oameniCurent[posOm].name} was met", end="")
                     if autobuzeCurent[i].hasMet(oameniCurent[posOm]): #if person chose not to board the first time, we ignore
-                        # print(f" and didnt board because he is banned")
+                        # print(f" and didnt board")
                         continue
                     # print(f" and boarded bus {autobuzeCurent[i].id}")
 
@@ -604,8 +594,6 @@ class Graph:
                     autobuzeCurent[i].metOm.append((oameniCurent[posOm], temp_loc)) 
                     oameniCurent[posOm] = go_back_to
                     autobuzeCurent[i].om = None
-                    # print(f"{oameniCurent[posOm].name} was added to banned list (case 2)")
-                    # print(f"\n\nAm generat si adaugat in lista de succesori urmatorul nod: {listaSuccesori[-1]}\n\n")
 
                 #IF station is empty and Autobuz has Om inside (generate successor where Om unboards)
                 elif posOm == None and autobuzeCurent[i].om != None: 
@@ -645,7 +633,6 @@ class Graph:
             timpCurent += autobuzeCurent[0].trip_duration 
 
         for i in range(len(lista_events)):
-
             #print(lista_events[i])
 
             if (lista_events[i].om.last_action != None and
@@ -661,14 +648,12 @@ class Graph:
                 if autobuze_new[j].id == lista_events[i].autobuz.id:
                     autobuze_new[j] = lista_events[i].autobuz
                 else:
-                    # print(f"{autobuze_new[j].id} updated {autobuze_new[j].destinations[autobuze_new[j].current_loc]} to ", end="")
                     (x, 
                     autobuze_new[j].current_loc, 
                     autobuze_new[j].direction_forward,
                     autobuze_new[j].metOm) = autobuze_new[j].getCurrentDest(nodCurent.info.time, lista_events[i].time, oameni_new) #self.start.info.time
                     if autobuze_new[j].om != None:
                         autobuze_new[j].om.current_loc = autobuze_new[j].destinations[autobuze_new[j].current_loc]
-                    # print(x + f" given params: start_time={self.start.info.time}, actual_time={lista_events[i].time}")
 
             for j in range(len(oameni_new)):
                 if oameni_new[j].name == lista_events[i].om.name:
@@ -703,7 +688,7 @@ class Graph:
             if self.testeaza_scop(infoNod):
                 return 0
             return 1
-        elif tip_euristica == "euristica admisibila 1": 
+        elif tip_euristica == "euristica admisibila 1":
             h=0
             cost_min_bilet = 100000
             for a in infoNod.autobuze:
@@ -725,7 +710,6 @@ class Graph:
             h = max_destinations*shortest_trip_duration
             return h
         elif tip_euristica == "euristica neadmisibila": 
-            #Acelasi principiu ca prima euristica admisibila, dar inmultim costul MAXIM al unui bilet cu numarul de destinatii ramase
             h=0
             cost_max_bilet = -1
             for a in infoNod.autobuze:
@@ -799,6 +783,8 @@ def get_dest(string):
         Returns:
             The string without quotation marks.
     """
+    if "\"" not in string:
+        return string
     index1 = 0
     index2 = -1
     while string[index1] != "\"":
@@ -832,7 +818,6 @@ def read_one(paths_in, paths_out, current_fis=0):
         Returns:
             String with beginning timestamp, string with end timestamp, list of Autobuz, list of Om
             
-
     """
 
     f = open(f"{paths_out[current_fis]}", "r")
@@ -880,6 +865,14 @@ def read_one(paths_in, paths_out, current_fis=0):
     return time_begin, time_end, autobuze, oameni
 
 def write_one(paths_out, solutii, current_fis, note=""):
+    """Writes results of one algortihm using one euristic to one of the output files.
+
+    Args:
+        paths_out (list of str): List of paths for output files.
+        solutii (list of str): List of results found.
+        current_fis (int): Index of output file to be written to.
+  
+    """
     f = open(f"{paths_out[current_fis]}", "a")
     f.write(note)
     for s in solutii:
@@ -918,7 +911,6 @@ def minutesToTime(minutes):
 
 def uniform_cost(gr, nrSolutiiCautate, tip_euristica):
 
-    #in coada vom avea doar noduri de tip NodParcurgere (nodurile din arborele de parcurgere)
     c=[NodParcurgere(gr.start.info, None, 0, gr.calculeaza_h(gr.start.info))]
     solutii = []
     max_noduri = 1
@@ -949,7 +941,6 @@ def uniform_cost(gr, nrSolutiiCautate, tip_euristica):
             i=0
             gasit_loc=False
             for i in range(len(c)):
-                #ordonez dupa cost(notat cu g aici și în desenele de pe site)
                 if c[i].g>s.g :
                     gasit_loc=True
                     break
@@ -983,17 +974,14 @@ def a_star(gr, nrSolutiiCautate, tip_euristica):
             nrSolutiiCautate -= 1
             if nrSolutiiCautate == 0:
                 return solutii
-        # print(f"\n*********************************************\nGenerez succesori pt nodul \n{nodCurent.info}\n*********************************************\n")
         lSuccesori=gr.genereazaSuccesori(nodCurent, tip_euristica=tip_euristica)
         total_noduri += len(lSuccesori)	
         if max_noduri < len(lSuccesori):
             max_noduri = len(lSuccesori)
         for s in lSuccesori:
             i = 0
-            # print("-"*30 + "\n" + s.info.oameni[0].current_loc + "\n")
             gasit_loc = False
             for i in range(len(c)):
-                #diferenta fata de UCS e ca ordonez dupa f
                 if c[i].f >= s.f :
                     gasit_loc = True
                     break
@@ -1004,15 +992,13 @@ def a_star(gr, nrSolutiiCautate, tip_euristica):
     return solutii
 
 def a_star_optimizat(gr, tip_euristica):
-    #in coada vom avea doar noduri de tip NodParcurgere (nodurile din arborele de parcurgere)
     l_open=[NodParcurgere(gr.start.info, None, 0, gr.calculeaza_h(gr.start.info))]
 
-    #l_open contine nodurile candidate pentru expandare
     solutii = []
     max_noduri = 1
     total_noduri = 1
     initial_time = time()
-    #l_closed contine nodurile expandate
+
     l_closed=[]
     while len(l_open)>0:
         nodCurent=l_open.pop(0)
@@ -1039,7 +1025,7 @@ def a_star_optimizat(gr, tip_euristica):
                     gasitC=True
                     if s.f>=nodC.f:
                         lSuccesori.remove(s)
-                    else:#s.f<nodC.f
+                    else:
                         l_open.remove(nodC)
                     break
             if not gasitC:
@@ -1047,15 +1033,13 @@ def a_star_optimizat(gr, tip_euristica):
                     if s.info==nodC.info:
                         if s.f>=nodC.f:
                             lSuccesori.remove(s)
-                        else:#s.f<nodC.f
+                        else:
                             l_closed.remove(nodC)
                         break
         for s in lSuccesori:
             i=0
             gasit_loc=False
             for i in range(len(l_open)):
-                #diferenta fata de UCS e ca ordonez crescator dupa f
-                #daca f-urile sunt egale ordonez descrescator dupa g
                 if l_open[i].f>s.f or (l_open[i].f==s.f and l_open[i].g<=s.g) :
                     gasit_loc=True
                     break
@@ -1063,6 +1047,7 @@ def a_star_optimizat(gr, tip_euristica):
                 l_open.insert(i,s)
             else:
                 l_open.append(s)
+    return solutii
 
 def ida_star(gr, nrSolutiiCautate, tip_euristica):
 
@@ -1073,22 +1058,15 @@ def ida_star(gr, nrSolutiiCautate, tip_euristica):
     initial_time = time()
     limita=nodStart.f
     while True:
-
-        # print("Limita de pornire: ", limita)
         nrSolutiiCautate, rez, solutii = construieste_drum(gr, nodStart, limita, nrSolutiiCautate, tip_euristica, solutii, max_noduri, total_noduri, initial_time)
         if rez=="gata":
             break
         if rez==float('inf'):
-            # print("Nu exista solutii!")
             break
         limita=rez
-        # print(">>> Limita noua: ", limita)
     return solutii
 
-
-
 def construieste_drum(gr, nodCurent, limita, nrSolutiiCautate, tip_euristica, solutii, max_noduri, total_noduri, initial_time):
-    # print("A ajuns la: ", nodCurent)
     if nodCurent.f>limita:
         return nrSolutiiCautate, nodCurent.f, solutii
     if gr.testeaza_scop(nodCurent.info) and nodCurent.f==limita :
@@ -1113,10 +1091,8 @@ def construieste_drum(gr, nodCurent, limita, nrSolutiiCautate, tip_euristica, so
         nrSolutiiCautate, rez, solutii = construieste_drum(gr, s, limita, nrSolutiiCautate, tip_euristica, solutii, max_noduri, total_noduri, initial_time)
         if rez=="gata":
             return 0, "gata", solutii
-        # print("Compara ", rez, " cu ", minim)
         if rez<minim:
             minim=rez
-            # print("Noul minim: ", minim)
     return nrSolutiiCautate, minim, solutii
 
 def main():
@@ -1129,7 +1105,6 @@ def main():
 
         time_begin = timeToMinutes(time_begin)
         time_end = timeToMinutes(time_end)
-        # print(f"\ntime_begin = {time_begin}, time_end = {time_end}, time_begin*2 == time_end = {time_begin*2 == time_end}\n")
 
         info = NodInfo(oameni, autobuze, time_begin)
         nod_start =  NodParcurgere(info, None, 0, 0)
@@ -1139,15 +1114,9 @@ def main():
             print("Starea de inceput nu permite solutii")
             sys.exit(0)
 
-        # succesori_start = graf.genereazaSuccesori(nod_start)
-        # for s in succesori_start:
-        #     print(s)
-
-        # a_star(graf, nrsol, "euristica banala")
-
         list_algo = [uniform_cost, a_star, a_star_optimizat, ida_star]
         list_euristici = ["euristica banala", "euristica admisibila 1", "euristica admisibila 2", "euristica neadmisibila"]
-        sep = "-"*25 + "\n"
+        sep = "*"*37 + "\n\n\n"
         for algo in list_algo:
             if algo != a_star_optimizat:
                 for eu in list_euristici:
@@ -1163,17 +1132,6 @@ def main():
                         write_one(paths_out, solutii, i, f"Solutie pentru {algo.__name__}, cu {eu}\n" + sep)
                     except FunctionTimedOut:
                         write_one(paths_out, [], i, note=f"Algoritmul {algo.__name__}, cu {eu} a fost timed out\n" + sep)
-
-                
-
-
-        # try:
-        #     solutii = func_timeout(timeout, a_star, args=(graf, nrsol, "euristica admisibila 2"))
-        #     for s in solutii:
-        #         # print(s)
-        #         write_one(paths_out, s, i, note="Solutii UCS, euristica banala")
-        # except FunctionTimedOut:
-        #     # print("Timed out.\n")
 
 if __name__ == '__main__':
     main()

@@ -1,40 +1,320 @@
-Solutii pentru a_star, cu euristica banala
--------------------------
-Solutie: 
+Solutii pentru uniform_cost, cu euristica banala
+*************************************
 
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
 Lungimea drumului este: 0
 Costul drumului este: 0
 Numarul maxim de noduri in memorie: 1
 Numarul total de noduri calculate este: 1
-Solutia a fost gasita in 1.2636184692382812e-05
+Solutia a fost gasita in 3.0279159545898438e-05
+----------------
+Solutii pentru uniform_cost, cu euristica admisibila 1
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 5.507469177246094e-05
+----------------
+Solutii pentru uniform_cost, cu euristica admisibila 2
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 3.0517578125e-05
+----------------
+Solutii pentru uniform_cost, cu euristica neadmisibila
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 4.029273986816406e-05
+----------------
+Solutii pentru a_star, cu euristica banala
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 2.956390380859375e-05
 ----------------
 Solutii pentru a_star, cu euristica admisibila 1
--------------------------
-Solutie: 
+*************************************
 
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
 Lungimea drumului este: 0
 Costul drumului este: 0
 Numarul maxim de noduri in memorie: 1
 Numarul total de noduri calculate este: 1
-Solutia a fost gasita in 1.9311904907226562e-05
+Solutia a fost gasita in 2.8848648071289062e-05
 ----------------
 Solutii pentru a_star, cu euristica admisibila 2
--------------------------
-Solutie: 
+*************************************
 
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
 Lungimea drumului este: 0
 Costul drumului este: 0
 Numarul maxim de noduri in memorie: 1
 Numarul total de noduri calculate este: 1
-Solutia a fost gasita in 1.3828277587890625e-05
+Solutia a fost gasita in 2.8133392333984375e-05
 ----------------
 Solutii pentru a_star, cu euristica neadmisibila
--------------------------
-Solutie: 
+*************************************
 
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
 Lungimea drumului este: 0
 Costul drumului este: 0
 Numarul maxim de noduri in memorie: 1
 Numarul total de noduri calculate este: 1
-Solutia a fost gasita in 1.1920928955078125e-05
+Solutia a fost gasita in 2.8371810913085938e-05
+----------------
+Solutie pentru a_star_optimizat, cu euristica banala
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 3.2901763916015625e-05
+----------------
+Solutie pentru a_star_optimizat, cu euristica admisibila 1
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 2.86102294921875e-05
+----------------
+Solutie pentru a_star_optimizat, cu euristica admisibila 2
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 3.123283386230469e-05
+----------------
+Solutie pentru a_star_optimizat, cu euristica neadmisibila
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 2.956390380859375e-05
+----------------
+Solutii pentru ida_star, cu euristica banala
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 3.147125244140625e-05
+----------------
+Solutii pentru ida_star, cu euristica admisibila 1
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 2.86102294921875e-05
+----------------
+Solutii pentru ida_star, cu euristica admisibila 2
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 4.267692565917969e-05
+----------------
+Solutii pentru ida_star, cu euristica neadmisibila
+*************************************
+
+
+Solutie: 
+Starea initiala este si finala
+Time: 480
+Oameni:
+['name=Ionel current_loc=A autobuz=None ', 'name=Gigel current_loc=B autobuz=None ']
+Autobuze:
+['id=100 price=1.0 break_duration=1 trip_duration=1 current_loc=D direction_forward=False om=None ']
+Event:
+None
+(g:0 h:0 f:0)
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 3.0279159545898438e-05
 ----------------

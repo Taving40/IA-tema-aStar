@@ -1,8 +1,64 @@
+Solutii pentru uniform_cost, cu euristica banala
+*************************************
+
+
+Solutii pentru uniform_cost, cu euristica admisibila 1
+*************************************
+
+
+Solutii pentru uniform_cost, cu euristica admisibila 2
+*************************************
+
+
+Solutii pentru uniform_cost, cu euristica neadmisibila
+*************************************
+
+
 Solutii pentru a_star, cu euristica banala
--------------------------
+*************************************
+
+
 Solutii pentru a_star, cu euristica admisibila 1
--------------------------
+*************************************
+
+
 Solutii pentru a_star, cu euristica admisibila 2
--------------------------
+*************************************
+
+
 Solutii pentru a_star, cu euristica neadmisibila
--------------------------
+*************************************
+
+
+Solutie pentru a_star_optimizat, cu euristica banala
+*************************************
+
+
+Solutie pentru a_star_optimizat, cu euristica admisibila 1
+*************************************
+
+
+Solutie pentru a_star_optimizat, cu euristica admisibila 2
+*************************************
+
+
+Solutie pentru a_star_optimizat, cu euristica neadmisibila
+*************************************
+
+
+Solutii pentru ida_star, cu euristica banala
+*************************************
+
+
+Solutii pentru ida_star, cu euristica admisibila 1
+*************************************
+
+
+Solutii pentru ida_star, cu euristica admisibila 2
+*************************************
+
+
+Solutii pentru ida_star, cu euristica neadmisibila
+*************************************
+
+

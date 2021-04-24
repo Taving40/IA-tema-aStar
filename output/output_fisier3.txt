@@ -1,0 +1,40 @@
+Solutii pentru a_star, cu euristica banala
+-------------------------
+Solutie: 
+
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 1.2636184692382812e-05
+----------------
+Solutii pentru a_star, cu euristica admisibila 1
+-------------------------
+Solutie: 
+
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 1.9311904907226562e-05
+----------------
+Solutii pentru a_star, cu euristica admisibila 2
+-------------------------
+Solutie: 
+
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 1.3828277587890625e-05
+----------------
+Solutii pentru a_star, cu euristica neadmisibila
+-------------------------
+Solutie: 
+
+Lungimea drumului este: 0
+Costul drumului este: 0
+Numarul maxim de noduri in memorie: 1
+Numarul total de noduri calculate este: 1
+Solutia a fost gasita in 1.1920928955078125e-05
+----------------

@@ -4,8 +4,6 @@ from copy import deepcopy
 from func_timeout import func_timeout, FunctionTimedOut
 from time import time
 #TODO:
-# -fix getCurrentDest()
-# -figure out euristica
 # -figure out inputs
 # -write doc (?)
    
@@ -176,23 +174,32 @@ class Autobuz:
         temp_copy = deepcopy(self)
 
         while time_decal >= 0:
-            #TODO: look at exactly which locations temp_copy goes throug, since if I append those people as met, but temp_copy 
-            #wasnt ACTUALLY meant to be in that station i lose a lot of successors
-            #even if that s not the case, this is surely where the issue arised
             station, time = temp_copy.getNextDest()
-            # if station in temp_oameni_loc.keys():
-            #     temp_copy.metOm.append((temp_oameni_loc[station], station))
-            # else:
-            #     temp_copy.unmeetLoc(station)
+            if time_decal - time > 0:
+                temp_copy.unmeetLoc(station)
+                if station in temp_oameni_loc.keys():
+                    temp_copy.metOm.append((temp_oameni_loc[station], station))
             time_decal -= time
         if temp_copy.direction_forward and temp_copy.current_loc == 0:
-            return temp_copy.destinations[0], 0, temp_copy.direction_forward, temp_copy.metOm
+            return (temp_copy.destinations[0], 
+                    0,
+                    not temp_copy.direction_forward, 
+                    temp_copy.metOm)
         elif temp_copy.direction_forward and temp_copy.current_loc != 0:
-            return temp_copy.destinations[temp_copy.current_loc-1], temp_copy.current_loc-1, temp_copy.direction_forward, temp_copy.metOm
+            return (temp_copy.destinations[temp_copy.current_loc-1], 
+                    temp_copy.current_loc-1, 
+                    temp_copy.direction_forward, 
+                    temp_copy.metOm)
         elif not temp_copy.direction_forward and temp_copy.current_loc == len(temp_copy.destinations)-1:
-            return temp_copy.destinations[len(temp_copy.destinations)-1], len(temp_copy.destinations)-1, temp_copy.direction_forward, temp_copy.metOm
+            return (temp_copy.destinations[len(temp_copy.destinations)-1],
+                    len(temp_copy.destinations)-1,
+                    not temp_copy.direction_forward,
+                    temp_copy.metOm)
         elif not temp_copy.direction_forward and temp_copy.current_loc != len(temp_copy.destinations)-1:
-            return temp_copy.destinations[temp_copy.current_loc+1], temp_copy.current_loc+1, temp_copy.direction_forward, temp_copy.metOm
+            return (temp_copy.destinations[temp_copy.current_loc+1], 
+                    temp_copy.current_loc+1, 
+                    temp_copy.direction_forward, 
+                    temp_copy.metOm)
 
 
 class Om:
@@ -216,7 +223,10 @@ class Om:
         self.name = name
         self.money = money
         self.destinations = destinations
-        self.remaining_dest = destinations[1:]
+        if len(destinations) > 1:
+            self.remaining_dest = destinations[1:]
+        else:
+            self.remaining_dest = []
         self.current_loc = destinations[0] 
         self.state = "waiting" #can be "waiting" or "travelling"
         self.autobuz = None #Autobuz id
@@ -494,7 +504,6 @@ class Graph:
     def __init__(self, time_end, nod_start):
         self.time_end = time_end
         self.start = nod_start
-        self.nodCurent = nod_start
 
     def testeaza_scop(self, nodInfo): 
         isScop = True
@@ -689,19 +698,41 @@ class Graph:
 
         return listaSuccesori
 
-
-    # TODO: idei euristica
-    # decided by the total cost needed for each Om to reach all of his destinations 
-    # probably by adding up all the "ideal" costs (as if reaching destination only took one station)
-    # next should estimate how many stations it would take and multiply by lowest or highest or average cost?
     def calculeaza_h(self, infoNod, tip_euristica="euristica banala"):
         if tip_euristica == "euristica banala":
             if self.testeaza_scop(infoNod):
                 return 0
             return 1
-        else: #TODO
+        elif tip_euristica == "euristica admisibila 1": 
             h=0
-            
+            cost_min_bilet = 100000
+            for a in infoNod.autobuze:
+                if cost_min_bilet > a.price:
+                    cost_min_bilet = a.price
+            for o in infoNod.oameni:
+                h += len(o.remaining_destinations)*cost_min_bilet
+            return h
+        elif tip_euristica == "euristica admisibila 2": 
+            h=0
+            max_destinations = 0
+            for o in infoNod.oameni:   
+                if len(o.remaining_dest) > max_destinations:
+                    max_destinations = len(o.remaining_dest)
+            shortest_trip_duration = self.time_end+1
+            for a in infoNod.autobuze:
+                if shortest_trip_duration > a.trip_duration:
+                    shortest_trip_duration = a.trip_duration
+            h = max_destinations*shortest_trip_duration
+            return h
+        elif tip_euristica == "euristica neadmisibila": 
+            #Acelasi principiu ca prima euristica admisibila, dar inmultim costul MAXIM al unui bilet cu numarul de destinatii ramase
+            h=0
+            cost_max_bilet = -1
+            for a in infoNod.autobuze:
+                if cost_max_bilet < a.price:
+                    cost_max_bilet = a.price
+            for o in infoNod.oameni:
+                h += len(o.remaining_destinations)*cost_max_bilet
             return h
 
     def __repr__(self):
@@ -848,6 +879,12 @@ def read_one(paths_in, paths_out, current_fis=0):
 
     return time_begin, time_end, autobuze, oameni
 
+def write_one(paths_out, solutii, current_fis, note=""):
+    f = open(f"{paths_out[current_fis]}", "a")
+    f.write(note)
+    for s in solutii:
+        f.write(s)
+
 def timeToMinutes(timestamp):
     """Converts a string timestamp into an int number of minutes.
 
@@ -920,6 +957,7 @@ def uniform_cost(gr, nrSolutiiCautate, tip_euristica):
                 c.insert(i,s)
             else:
                 c.append(s)
+    return solutii
 
 def a_star(gr, nrSolutiiCautate, tip_euristica): 
     c=[NodParcurgere(gr.start.info, None, 0, gr.calculeaza_h(gr.start.info))]
@@ -963,6 +1001,7 @@ def a_star(gr, nrSolutiiCautate, tip_euristica):
                 c.insert(i,s)
             else:
                 c.append(s)
+    return solutii
 
 def a_star_optimizat(gr, tip_euristica):
     #in coada vom avea doar noduri de tip NodParcurgere (nodurile din arborele de parcurgere)
@@ -1035,21 +1074,21 @@ def ida_star(gr, nrSolutiiCautate, tip_euristica):
     limita=nodStart.f
     while True:
 
-        print("Limita de pornire: ", limita)
+        # print("Limita de pornire: ", limita)
         nrSolutiiCautate, rez, solutii = construieste_drum(gr, nodStart, limita, nrSolutiiCautate, tip_euristica, solutii, max_noduri, total_noduri, initial_time)
         if rez=="gata":
             break
         if rez==float('inf'):
-            print("Nu exista solutii!")
+            # print("Nu exista solutii!")
             break
         limita=rez
-        print(">>> Limita noua: ", limita)
+        # print(">>> Limita noua: ", limita)
     return solutii
 
 
 
 def construieste_drum(gr, nodCurent, limita, nrSolutiiCautate, tip_euristica, solutii, max_noduri, total_noduri, initial_time):
-    print("A ajuns la: ", nodCurent)
+    # print("A ajuns la: ", nodCurent)
     if nodCurent.f>limita:
         return nrSolutiiCautate, nodCurent.f, solutii
     if gr.testeaza_scop(nodCurent.info) and nodCurent.f==limita :
@@ -1074,17 +1113,17 @@ def construieste_drum(gr, nodCurent, limita, nrSolutiiCautate, tip_euristica, so
         nrSolutiiCautate, rez, solutii = construieste_drum(gr, s, limita, nrSolutiiCautate, tip_euristica, solutii, max_noduri, total_noduri, initial_time)
         if rez=="gata":
             return 0, "gata", solutii
-        print("Compara ", rez, " cu ", minim)
+        # print("Compara ", rez, " cu ", minim)
         if rez<minim:
             minim=rez
-            print("Noul minim: ", minim)
+            # print("Noul minim: ", minim)
     return nrSolutiiCautate, minim, solutii
 
 def main():
     dir_in, dir_out, nrsol, timeout = init()
     paths_in, paths_out = make_files(dir_in, dir_out)
-    for i in [0]:#range(len(paths_in)):
-        print("-"*20 + "pt input nr {}".format(i) + "-"*20)
+    for i in range(len(paths_in)):
+        # print("-"*20 + f"pt input nr {i+1}" + "-"*20)
 
         time_begin, time_end, autobuze, oameni = read_one(paths_in, paths_out, i)
 
@@ -1106,13 +1145,35 @@ def main():
 
         # a_star(graf, nrsol, "euristica banala")
 
-        try:
-            solutii = func_timeout(timeout, a_star, args=(graf, nrsol, "euristica_banala"))
-            for s in solutii:
-                print(s)
-                #write_one()
-        except FunctionTimedOut:
-            print("Timed out.\n")
+        list_algo = [uniform_cost, a_star, a_star_optimizat, ida_star]
+        list_euristici = ["euristica banala", "euristica admisibila 1", "euristica admisibila 2", "euristica neadmisibila"]
+        sep = "-"*25 + "\n"
+        for algo in list_algo:
+            if algo != a_star_optimizat:
+                for eu in list_euristici:
+                    try:
+                        solutii = func_timeout(timeout, algo, args=(graf, nrsol, eu))
+                        write_one(paths_out, solutii, i, f"Solutii pentru {algo.__name__}, cu {eu}\n" + sep)
+                    except FunctionTimedOut:
+                        write_one(paths_out, [], i, note=f"Algoritmul {algo.__name__}, cu {eu} a fost timed out\n" + sep)
+            else:
+                for eu in list_euristici:
+                    try:
+                        solutii = func_timeout(timeout, algo, args=(graf, eu))
+                        write_one(paths_out, solutii, i, f"Solutie pentru {algo.__name__}, cu {eu}\n" + sep)
+                    except FunctionTimedOut:
+                        write_one(paths_out, [], i, note=f"Algoritmul {algo.__name__}, cu {eu} a fost timed out\n" + sep)
+
+                
+
+
+        # try:
+        #     solutii = func_timeout(timeout, a_star, args=(graf, nrsol, "euristica admisibila 2"))
+        #     for s in solutii:
+        #         # print(s)
+        #         write_one(paths_out, s, i, note="Solutii UCS, euristica banala")
+        # except FunctionTimedOut:
+        #     # print("Timed out.\n")
 
 if __name__ == '__main__':
     main()

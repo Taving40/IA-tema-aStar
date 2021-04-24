@@ -1,0 +1,8 @@
+Solutii pentru a_star, cu euristica banala
+-------------------------
+Solutii pentru a_star, cu euristica admisibila 1
+-------------------------
+Solutii pentru a_star, cu euristica admisibila 2
+-------------------------
+Solutii pentru a_star, cu euristica neadmisibila
+-------------------------

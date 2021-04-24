@@ -1,5 +1,5 @@
 08:00 09:00
 100 1lei 1min 1min "A","B","C","D"
 2 oameni
-Ionel 10lei "A","C"
-Gigel 10lei "B","D"
+Ionel 100lei "A"
+Gigel 100lei "B"
